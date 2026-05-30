@@ -1,0 +1,3425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VLSI Learning Hub — BSc Level 4</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --ink:       #0E1117;
+  --ink2:      #3A3F4B;
+  --ink3:      #7A8090;
+  --surface:   #F4F6FA;
+  --card:      #FFFFFF;
+  --border:    #E2E6EE;
+  --border2:   #CDD4E3;
+
+  --chip:      #1A1F2E;
+  --chip2:     #252D44;
+  --chip3:     #2E3A5A;
+
+  --accent:    #2563EB;
+  --accent2:   #1E50C8;
+  --accent-s:  #EFF4FF;
+
+  --teal:      #0891B2;
+  --teal-s:    #E0F7FB;
+  --amber:     #D97706;
+  --amber-s:   #FEF3C7;
+  --emerald:   #059669;
+  --emerald-s: #D1FAE5;
+  --violet:    #7C3AED;
+  --violet-s:  #EDE9FE;
+  --coral:     #DC2626;
+  --coral-s:   #FEE2E2;
+
+  --radius:    10px;
+  --shadow:    0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.05);
+  --shadow2:   0 4px 12px rgba(0,0,0,0.09);
+
+  --mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+  --sans: 'DM Sans', system-ui, sans-serif;
+  --display: 'Syne', var(--sans);
+}
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Syne:wght@600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+body {
+  font-family: var(--sans);
+  background: var(--surface);
+  color: var(--ink);
+  min-height: 100vh;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* ── HEADER ── */
+.header {
+  background: var(--chip);
+  color: #fff;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+}
+.header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.03) 0, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 40px),
+    repeating-linear-gradient(0deg,  rgba(255,255,255,0.03) 0, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 40px);
+  pointer-events: none;
+}
+.header-inner {
+  position: relative;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 1.5rem;
+}
+.header-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.2rem;
+}
+.chip-icon {
+  width: 52px; height: 52px;
+  background: var(--chip2);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+.header-title {
+  font-family: var(--display);
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #fff;
+  line-height: 1.15;
+}
+.header-sub {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.55);
+  margin-top: 4px;
+}
+.header-pills {
+  display: flex; gap: 6px; flex-wrap: wrap; margin-top: 1rem;
+}
+.hpill {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.75);
+  padding: 4px 12px;
+  border-radius: 99px;
+  font-size: 0.72rem;
+  font-weight: 500;
+}
+
+/* ── NAV ── */
+.nav-wrap {
+  background: var(--chip2);
+  border-top: 1px solid rgba(255,255,255,0.07);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.nav-wrap::-webkit-scrollbar { display: none; }
+.nav {
+  display: flex;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  gap: 2px;
+}
+.nav-btn {
+  flex-shrink: 0;
+  padding: 11px 14px;
+  border: none;
+  background: none;
+  color: rgba(255,255,255,0.5);
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.15s;
+  white-space: nowrap;
+  letter-spacing: 0.01em;
+}
+.nav-btn:hover { color: rgba(255,255,255,0.85); }
+.nav-btn.active { color: #fff; border-bottom-color: var(--accent); }
+
+/* ── MAIN ── */
+.main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+.section { display: none; }
+.section.active { display: block; }
+
+/* ── CARDS ── */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.1rem 1.2rem;
+  box-shadow: var(--shadow);
+  margin-bottom: 12px;
+}
+.card-accent-blue   { border-left: 3px solid var(--accent); }
+.card-accent-teal   { border-left: 3px solid var(--teal); }
+.card-accent-amber  { border-left: 3px solid var(--amber); }
+.card-accent-violet { border-left: 3px solid var(--violet); }
+.card-accent-emerald{ border-left: 3px solid var(--emerald); }
+.card-accent-coral  { border-left: 3px solid var(--coral); }
+
+.card-tag {
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 5px;
+}
+.tag-blue    { color: var(--accent); }
+.tag-teal    { color: var(--teal); }
+.tag-amber   { color: var(--amber); }
+.tag-violet  { color: var(--violet); }
+.tag-emerald { color: var(--emerald); }
+.tag-coral   { color: var(--coral); }
+
+.card-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+.card-body {
+  font-size: 0.84rem;
+  color: var(--ink2);
+  line-height: 1.65;
+}
+
+/* ── BADGES ── */
+.badge {
+  display: inline-block;
+  padding: 2px 9px;
+  border-radius: 99px;
+  font-size: 0.68rem;
+  font-weight: 500;
+}
+.badge-blue   { background: var(--accent-s); color: var(--accent2); }
+.badge-teal   { background: var(--teal-s);   color: var(--teal); }
+.badge-amber  { background: var(--amber-s);  color: var(--amber); }
+.badge-violet { background: var(--violet-s); color: var(--violet); }
+.badge-emerald{ background: var(--emerald-s);color: var(--emerald); }
+.badge-coral  { background: var(--coral-s);  color: var(--coral); }
+.badge-gray   { background: #F1F3F7; color: var(--ink3); }
+.badges { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; }
+
+/* ── GRID ── */
+.grid-2 { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+.grid-3 { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+
+/* ── SECTION HEADERS ── */
+.sec-h2 {
+  font-family: var(--display);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #fff;
+  background: var(--chip);
+  padding: 7px 14px;
+  border-radius: 7px;
+  margin: 20px 0 10px;
+}
+.sec-h3 {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink);
+  padding: 8px 12px;
+  background: var(--accent-s);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 6px 6px 0;
+  margin: 14px 0 8px;
+}
+
+/* ── KEY-VALUE TABLE ── */
+.kv { width: 100%; border-collapse: collapse; font-size: 0.83rem; margin: 8px 0; }
+.kv tr { border-bottom: 1px solid var(--border); }
+.kv tr:last-child { border-bottom: none; }
+.kv td { padding: 8px 10px; vertical-align: top; line-height: 1.55; }
+.kv td:first-child {
+  font-weight: 600;
+  color: var(--accent2);
+  background: var(--accent-s);
+  width: 28%;
+  min-width: 110px;
+  border-radius: 4px 0 0 4px;
+}
+.kv td:last-child { color: var(--ink2); }
+.kv a { color: var(--accent); text-decoration: none; }
+.kv a:hover { text-decoration: underline; }
+.kv code { font-family: var(--mono); font-size: 0.78rem; background: #F1F3F7; padding: 1px 5px; border-radius: 3px; }
+
+/* ── INFO BOX ── */
+.info-box {
+  border-radius: 8px;
+  padding: 11px 14px;
+  margin: 10px 0;
+  font-size: 0.83rem;
+  line-height: 1.6;
+}
+.info-box .info-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+.ib-blue   { background: var(--accent-s);  border-left: 4px solid var(--accent);  }
+.ib-blue   .info-label { color: var(--accent); }
+.ib-blue   p { color: var(--ink2); }
+.ib-teal   { background: var(--teal-s);   border-left: 4px solid var(--teal);  }
+.ib-teal   .info-label { color: var(--teal); }
+.ib-teal   p { color: #0a4a5a; }
+.ib-amber  { background: var(--amber-s);  border-left: 4px solid var(--amber); }
+.ib-amber  .info-label { color: var(--amber); }
+.ib-amber  p { color: #713a07; }
+.ib-emerald{ background: var(--emerald-s);border-left: 4px solid var(--emerald);}
+.ib-emerald .info-label { color: var(--emerald); }
+.ib-emerald p { color: #064e3b; }
+
+/* ── RESOURCE LINK CARD ── */
+.res-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem 1.1rem;
+  box-shadow: var(--shadow);
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  cursor: pointer;
+}
+.res-card:hover { border-color: var(--accent); box-shadow: var(--shadow2); }
+.res-icon {
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+.res-body { flex: 1; min-width: 0; }
+.res-title { font-size: 0.88rem; font-weight: 600; color: var(--ink); margin-bottom: 3px; }
+.res-desc  { font-size: 0.78rem; color: var(--ink3); line-height: 1.5; }
+.res-footer{ display: flex; gap: 5px; flex-wrap: wrap; margin-top: 7px; }
+
+/* ── CODE BLOCK ── */
+.code-block {
+  background: var(--chip);
+  color: #C9D1D9;
+  border-radius: 8px;
+  padding: 14px 16px;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  line-height: 1.7;
+  overflow-x: auto;
+  margin: 10px 0;
+  position: relative;
+}
+.code-block .kw  { color: #FF7B72; }
+.code-block .mod { color: #79C0FF; }
+.code-block .str { color: #A5D6FF; }
+.code-block .num { color: #F2CC60; }
+.code-block .cmt { color: #8B949E; font-style: italic; }
+.code-block .sig { color: #D2A8FF; }
+.code-block .op  { color: #FF7B72; }
+.copy-btn {
+  position: absolute; top: 8px; right: 8px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.7);
+  padding: 3px 10px;
+  border-radius: 5px;
+  font-size: 0.68rem;
+  cursor: pointer;
+  font-family: var(--sans);
+}
+.copy-btn:hover { background: rgba(255,255,255,0.14); }
+
+/* ── AI DAILY BOX ── */
+.ai-box {
+  background: linear-gradient(135deg, var(--chip), var(--chip3));
+  border: 1px solid rgba(37,99,235,0.35);
+  border-radius: 12px;
+  padding: 1.3rem 1.5rem;
+  margin-bottom: 16px;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+.ai-box::before {
+  content: '⬡';
+  position: absolute;
+  right: -10px; top: -20px;
+  font-size: 7rem;
+  opacity: 0.04;
+  pointer-events: none;
+}
+.ai-box-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+.ai-box-title {
+  font-family: var(--display);
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 8px;
+}
+.ai-box-body {
+  font-size: 0.83rem;
+  color: rgba(255,255,255,0.72);
+  line-height: 1.65;
+}
+.ai-box-footer {
+  margin-top: 12px;
+  display: flex; gap: 8px; flex-wrap: wrap;
+}
+.ai-btn {
+  background: rgba(37,99,235,0.2);
+  border: 1px solid rgba(37,99,235,0.4);
+  color: #93C5FD;
+  padding: 5px 14px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: var(--sans);
+  transition: all 0.15s;
+}
+.ai-btn:hover { background: rgba(37,99,235,0.35); }
+.ai-btn.loading { opacity: 0.6; cursor: wait; }
+.ai-refresh-note { font-size: 0.7rem; color: rgba(255,255,255,0.35); margin-top: 8px; }
+
+/* ── ROADMAP ── */
+.roadmap {
+  display: flex;
+  gap: 0;
+  margin: 14px 0;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+.rmap-phase {
+  flex: 1; min-width: 120px;
+  display: flex; flex-direction: column;
+  position: relative;
+}
+.rmap-phase:not(:last-child)::after {
+  content: '→';
+  position: absolute;
+  right: -10px;
+  top: 18px;
+  color: var(--ink3);
+  font-size: 1rem;
+  z-index: 1;
+}
+.rmap-head {
+  padding: 8px 10px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-align: center;
+  border-radius: 6px 6px 0 0;
+  color: #fff;
+}
+.rmap-body {
+  border: 1px solid var(--border);
+  border-top: none;
+  border-radius: 0 0 6px 6px;
+  padding: 8px 10px;
+  font-size: 0.73rem;
+  color: var(--ink2);
+  line-height: 1.55;
+  flex: 1;
+}
+
+/* ── QUIZ SECTION ── */
+.quiz-q {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+.quiz-options { display: flex; flex-direction: column; gap: 7px; }
+.quiz-opt {
+  padding: 9px 14px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 0.83rem;
+  background: var(--card);
+  color: var(--ink2);
+  text-align: left;
+  font-family: var(--sans);
+  transition: all 0.12s;
+}
+.quiz-opt:hover { border-color: var(--accent); color: var(--ink); }
+.quiz-opt.correct { background: var(--emerald-s); border-color: var(--emerald); color: #065f46; }
+.quiz-opt.wrong   { background: var(--coral-s);   border-color: var(--coral);   color: #991b1b; }
+.quiz-explain {
+  margin-top: 10px;
+  padding: 9px 12px;
+  background: var(--accent-s);
+  border-radius: 7px;
+  font-size: 0.82rem;
+  color: var(--ink2);
+  display: none;
+}
+
+/* ── PROGRESS TRACKER ── */
+.prog-grid { display: grid; grid-template-columns: repeat(8,1fr); gap: 5px; margin: 10px 0; }
+.prog-cell {
+  aspect-ratio: 1;
+  border-radius: 4px;
+  background: var(--border);
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.65rem;
+  color: var(--ink3);
+  border: 1px solid transparent;
+}
+.prog-cell:hover { border-color: var(--accent); }
+.prog-cell.done { background: var(--emerald); color: #fff; }
+.prog-cell.active { background: var(--accent-s); border-color: var(--accent); color: var(--accent); }
+.prog-bar-wrap { height: 5px; background: var(--border); border-radius: 99px; margin: 10px 0 5px; overflow: hidden; }
+.prog-bar-fill { height: 100%; background: linear-gradient(90deg, var(--emerald), var(--accent)); border-radius: 99px; transition: width 0.4s; }
+
+/* ── GLOSSARY ── */
+.gloss-entry {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  display: flex; gap: 12px;
+}
+.gloss-entry:last-child { border-bottom: none; }
+.gloss-term {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--accent);
+  min-width: 130px;
+  flex-shrink: 0;
+}
+.gloss-def { font-size: 0.82rem; color: var(--ink2); line-height: 1.55; }
+
+/* ── MISC ── */
+.divider { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
+.tag-row { display: flex; gap: 5px; flex-wrap: wrap; margin: 6px 0; }
+a { color: var(--accent); }
+
+/* ── UPDATE TICKER ── */
+.ticker {
+  background: var(--chip2);
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding: 6px 1.5rem;
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.45);
+  display: flex; gap: 10px; align-items: center;
+}
+.ticker-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--emerald); flex-shrink: 0; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
+
+@media (max-width: 540px) {
+  .prog-grid { grid-template-columns: repeat(6,1fr); }
+  .kv td:first-child { width: 36%; font-size: 0.76rem; }
+  .roadmap { flex-direction: column; }
+  .rmap-phase::after { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <div class="header-top">
+      <div class="chip-icon">⬡</div>
+      <div>
+        <div class="header-title">VLSI Learning Hub</div>
+        <div class="header-sub">Verilog · FPGA · HDL · Digital Design · BSc Level 4 — auto-updated with AI</div>
+      </div>
+    </div>
+    <div class="header-pills">
+      <span class="hpill">🧠 AI Daily Tips</span>
+      <span class="hpill">📚 Free Books</span>
+      <span class="hpill">⚡ Verilog Snippets</span>
+      <span class="hpill">🛠 FPGA Tools</span>
+      <span class="hpill">📊 Progress Tracker</span>
+    </div>
+  </div>
+  <div class="ticker">
+    <div class="ticker-dot"></div>
+    <span id="ticker-text">Loading latest update…</span>
+  </div>
+  <div class="nav-wrap">
+    <div class="nav">
+      <button class="nav-btn active" onclick="show('home',this)">🏠 Home</button>
+      <button class="nav-btn" onclick="show('books',this)">📚 Free Books</button>
+      <button class="nav-btn" onclick="show('verilog',this)">💻 Verilog</button>
+      <button class="nav-btn" onclick="show('fpga',this)">🔌 FPGA</button>
+      <button class="nav-btn" onclick="show('hdl',this)">📐 HDL Concepts</button>
+      <button class="nav-btn" onclick="show('tools',this)">🛠 Tools</button>
+      <button class="nav-btn" onclick="show('roadmap',this)">🗺 Roadmap</button>
+      <button class="nav-btn" onclick="show('quiz',this)">🧩 Quiz</button>
+      <button class="nav-btn" onclick="show('glossary',this)">📖 Glossary</button>
+      <button class="nav-btn" onclick="show('playlists',this)">📺 Playlists</button>
+      <button class="nav-btn" onclick="show('project',this)">🔊 Audio Project</button>
+      <button class="nav-btn" onclick="show('tracker',this)">📊 Progress</button>
+    </div>
+  </div>
+</div>
+
+<main class="main">
+
+<!-- ═══════════ HOME ═══════════ -->
+<div class="section active" id="sec-home">
+
+  <!-- AI Daily Tip -->
+  <div class="ai-box" id="ai-daily-box">
+    <div class="ai-box-label">🤖 AI Daily Insight — auto-refreshes every 24 hours</div>
+    <div class="ai-box-title" id="ai-daily-title">Loading today's VLSI insight…</div>
+    <div class="ai-box-body" id="ai-daily-body">Fetching from Claude AI…</div>
+    <div class="ai-box-footer">
+      <button class="ai-btn" onclick="loadDailyTip(true)">↺ Refresh</button>
+      <button class="ai-btn" onclick="askAI('Give me a Verilog coding challenge for beginners')">💡 Try a Verilog challenge</button>
+      <button class="ai-btn" onclick="askAI('Explain the difference between flip-flops and latches')">⚡ Quick explainer</button>
+    </div>
+    <div class="ai-refresh-note" id="ai-refresh-note"></div>
+  </div>
+
+  <!-- AI Ask Box -->
+  <div class="card card-accent-blue" style="margin-bottom:16px;">
+    <div class="card-tag tag-blue">Ask AI — powered by Claude</div>
+    <div style="display:flex;gap:8px;align-items:center;margin-top:8px;flex-wrap:wrap;">
+      <input type="text" id="ai-question" placeholder="Ask anything about VLSI, Verilog, FPGA…"
+        style="flex:1;min-width:200px;padding:9px 12px;border:1px solid var(--border);border-radius:7px;font-family:var(--sans);font-size:0.84rem;background:#fff;"
+        onkeydown="if(event.key==='Enter')askAI(this.value)">
+      <button onclick="askAI(document.getElementById('ai-question').value)"
+        style="padding:9px 18px;background:var(--accent);color:#fff;border:none;border-radius:7px;font-family:var(--sans);font-size:0.84rem;font-weight:500;cursor:pointer;">Ask Claude</button>
+    </div>
+    <div id="ai-response" style="display:none;margin-top:12px;padding:12px 14px;background:var(--surface);border-radius:7px;font-size:0.84rem;line-height:1.65;color:var(--ink2);white-space:pre-wrap;"></div>
+  </div>
+
+  <div class="sec-h2">Quick Start — What is VLSI?</div>
+
+  <div class="grid-2">
+    <div class="card card-accent-blue">
+      <div class="card-tag tag-blue">What you'll study</div>
+      <div class="card-title">VLSI — Very Large Scale Integration</div>
+      <div class="card-body">VLSI is the process of creating integrated circuits by combining millions of transistors into a single chip. As a Level 4 BSc student, you'll learn to design and simulate digital circuits using HDLs (Hardware Description Languages) like Verilog and VHDL, then synthesize them onto FPGAs.</div>
+      <div class="badges">
+        <span class="badge badge-blue">Verilog / VHDL</span>
+        <span class="badge badge-teal">FPGA Synthesis</span>
+        <span class="badge badge-amber">Timing Analysis</span>
+        <span class="badge badge-violet">Logic Design</span>
+      </div>
+    </div>
+    <div class="card card-accent-emerald">
+      <div class="card-tag tag-emerald">What you'll build</div>
+      <div class="card-title">From gates to chips — your learning arc</div>
+      <div class="card-body">Start with Boolean logic and combinational circuits, progress to sequential circuits (flip-flops, FSMs), then design complete systems (ALUs, memory controllers, communication interfaces) using HDL and verify them with testbenches.</div>
+      <div class="badges">
+        <span class="badge badge-emerald">Combinational Logic</span>
+        <span class="badge badge-blue">Sequential Circuits</span>
+        <span class="badge badge-amber">FSM Design</span>
+        <span class="badge badge-violet">SoC Concepts</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-h2">Core Topics at a Glance</div>
+
+  <div class="grid-3">
+    <div class="res-card" onclick="show('verilog', document.querySelectorAll('.nav-btn')[2])">
+      <div class="res-icon" style="background:var(--accent-s);">💻</div>
+      <div class="res-body">
+        <div class="res-title">Verilog HDL</div>
+        <div class="res-desc">Syntax, modules, testbenches, behavioral vs structural modeling</div>
+      </div>
+    </div>
+    <div class="res-card" onclick="show('fpga', document.querySelectorAll('.nav-btn')[3])">
+      <div class="res-icon" style="background:var(--teal-s);">🔌</div>
+      <div class="res-body">
+        <div class="res-title">FPGA Design</div>
+        <div class="res-desc">Xilinx Vivado, Altera Quartus, place-and-route, timing constraints</div>
+      </div>
+    </div>
+    <div class="res-card" onclick="show('hdl', document.querySelectorAll('.nav-btn')[4])">
+      <div class="res-icon" style="background:var(--violet-s);">📐</div>
+      <div class="res-body">
+        <div class="res-title">HDL Concepts</div>
+        <div class="res-desc">Synthesis, simulation, clock domains, timing analysis</div>
+      </div>
+    </div>
+    <div class="res-card" onclick="show('tools', document.querySelectorAll('.nav-btn')[5])">
+      <div class="res-icon" style="background:var(--amber-s);">🛠</div>
+      <div class="res-body">
+        <div class="res-title">Free EDA Tools</div>
+        <div class="res-desc">Vivado, Quartus, Icarus, GTKWave, EDAplayground</div>
+      </div>
+    </div>
+    <div class="res-card" onclick="show('books', document.querySelectorAll('.nav-btn')[1])">
+      <div class="res-icon" style="background:var(--emerald-s);">📚</div>
+      <div class="res-body">
+        <div class="res-title">Free Books</div>
+        <div class="res-desc">Patterson & Hennessy, Weste & Harris, Digital Design texts</div>
+      </div>
+    </div>
+    <div class="res-card" onclick="show('quiz', document.querySelectorAll('.nav-btn')[7])">
+      <div class="res-icon" style="background:var(--coral-s);">🧩</div>
+      <div class="res-body">
+        <div class="res-title">Practice Quiz</div>
+        <div class="res-desc">AI-generated questions on VLSI, Verilog, timing, FSMs</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════ BOOKS ═══════════ -->
+<div class="section" id="sec-books">
+
+  <div class="info-box ib-teal" style="margin-bottom:14px;">
+    <div class="info-label">About these books</div>
+    <p>All books listed here are either officially free from authors/publishers, legally available through university libraries, or have free access paths. Links point to official sources.</p>
+  </div>
+
+  <!-- AI Book Recommender -->
+  <div class="ai-box" style="margin-bottom:16px;">
+    <div class="ai-box-label">🤖 AI Book Guide</div>
+    <div class="ai-box-title">Ask Claude which chapter to read next</div>
+    <div class="ai-box-body">Tell Claude what topic you're studying and get a personalised reading recommendation from the books below.</div>
+    <div class="ai-box-footer">
+      <button class="ai-btn" onclick="askAI('I am a Level 4 BSc student starting VLSI. Which book and chapter should I read first?')">Which book first?</button>
+      <button class="ai-btn" onclick="askAI('Recommend a reading plan for Patterson and Hennessy RISC-V edition for a first year VLSI student')">Reading plan</button>
+      <button class="ai-btn" onclick="askAI('What is the best free book to learn Verilog from scratch?')">Best Verilog book</button>
+    </div>
+  </div>
+
+  <div class="sec-h2">Core Textbooks — VLSI & Digital Design</div>
+
+  <div class="card card-accent-blue" style="margin-bottom:12px;">
+    <div style="display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap;">
+      <div style="width:52px;height:68px;border-radius:6px;background:linear-gradient(135deg,#1A1F2E,#2563EB);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;">📘</div>
+      <div style="flex:1;">
+        <div class="card-tag tag-blue">Most important — start here</div>
+        <div class="card-title">Digital Design and Computer Architecture — RISC-V Edition</div>
+        <div style="font-size:0.8rem;color:var(--ink3);margin-bottom:6px;">Sarah Harris & David Harris · Morgan Kaufmann · 2021</div>
+        <div class="card-body">The definitive undergraduate text for VLSI. Covers combinational and sequential logic, Verilog/VHDL, RISC-V architecture, and memory systems with excellent hardware examples. Every VLSI student should read this cover-to-cover.</div>
+        <div class="badges" style="margin-top:10px;">
+          <span class="badge badge-blue">Verilog included</span>
+          <span class="badge badge-teal">RISC-V architecture</span>
+          <span class="badge badge-amber">Industry standard</span>
+        </div>
+        <table class="kv" style="margin-top:10px;">
+          <tr><td>Free access</td><td><a href="https://www.elsevier.com/books/digital-design-and-computer-architecture-risc-v-edition/harris/978-0-12-820064-3" target="_blank">Publisher page (via university library)</a></td></tr>
+          <tr><td>Free companion</td><td><a href="https://github.com/David-Harris-ucsd" target="_blank">GitHub — lab files & solutions</a></td></tr>
+          <tr><td>Archive borrow</td><td><a href="https://archive.org/search?query=digital+design+computer+architecture+harris" target="_blank">archive.org — borrow free</a></td></tr>
+          <tr><td>Chapter notes</td><td>Read Ch. 1–4 first (gates → FSMs). Do Ch. 7 (Verilog) simultaneously with coding practice.</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="card card-accent-teal" style="margin-bottom:12px;">
+    <div style="display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap;">
+      <div style="width:52px;height:68px;border-radius:6px;background:linear-gradient(135deg,#064e3b,#0891B2);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;">📗</div>
+      <div style="flex:1;">
+        <div class="card-tag tag-teal">VLSI CMOS circuits — classic</div>
+        <div class="card-title">CMOS VLSI Design: A Circuits and Systems Perspective</div>
+        <div style="font-size:0.8rem;color:var(--ink3);margin-bottom:6px;">Neil Weste & David Harris · Addison-Wesley · 4th Edition</div>
+        <div class="card-body">The definitive VLSI circuits reference. Goes deeper than Harris & Harris into transistor-level design, layout, timing, and power. Excellent for understanding why VLSI circuits work the way they do at the physical level.</div>
+        <div class="badges" style="margin-top:10px;">
+          <span class="badge badge-teal">CMOS transistors</span>
+          <span class="badge badge-blue">Layout rules</span>
+          <span class="badge badge-violet">Power analysis</span>
+        </div>
+        <table class="kv" style="margin-top:10px;">
+          <tr><td>Free access</td><td><a href="https://booksite.elsevier.com/9780123695277/" target="_blank">Free resources at booksite</a> · University library access</td></tr>
+          <tr><td>Solution manual</td><td>Search Google Scholar for "Weste Harris VLSI solution manual PDF"</td></tr>
+          <tr><td>Chapters to read</td><td>Ch. 1–3 (CMOS basics), Ch. 5–6 (timing), Ch. 10 (datapath design)</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-h2">Free Online Books — Verilog & HDL</div>
+
+  <div class="grid-2">
+    <div class="card card-accent-violet">
+      <div class="card-tag tag-violet">Entirely free — official</div>
+      <div class="card-title">FPGA Prototyping by Verilog Examples</div>
+      <div style="font-size:0.8rem;color:var(--ink3);margin-bottom:6px;">Pong P. Chu · Wiley</div>
+      <div class="card-body">Hands-on Verilog with real FPGA examples using Xilinx. Every chapter has a working design you can implement. Best book for learning Verilog by building real circuits.</div>
+      <table class="kv" style="margin-top:8px;">
+        <tr><td>Free PDF</td><td><a href="https://www.ece.ucdavis.edu/~bbaas/281/notes/Verilog.Chu.pdf" target="_blank">UC Davis hosted PDF</a></td></tr>
+        <tr><td>Code repo</td><td>Search "Pong Chu FPGA Verilog GitHub" — multiple mirrors</td></tr>
+      </table>
+    </div>
+
+    <div class="card card-accent-emerald">
+      <div class="card-tag tag-emerald">Free online textbook</div>
+      <div class="card-title">HDLBits — Interactive Verilog Learning</div>
+      <div style="font-size:0.8rem;color:var(--ink3);margin-bottom:6px;">Not a book — but the best free resource</div>
+      <div class="card-body">Browser-based Verilog practice with 200+ exercises, instant verification, and hints. Better than any textbook for learning Verilog syntax and digital design. Do every problem from "Getting Started" onwards.</div>
+      <table class="kv" style="margin-top:8px;">
+        <tr><td>Link</td><td><a href="https://hdlbits.01xz.net/wiki/Main_Page" target="_blank">hdlbits.01xz.net</a></td></tr>
+        <tr><td>Start here</td><td>Wire → Vectors → Modules → Always blocks → FSMs</td></tr>
+      </table>
+    </div>
+
+    <div class="card card-accent-blue">
+      <div class="card-tag tag-blue">Free — MIT OpenCourseWare</div>
+      <div class="card-title">Computation Structures (6.004) Notes</div>
+      <div style="font-size:0.8rem;color:var(--ink3);margin-bottom:6px;">MIT · Completely free · Includes video lectures</div>
+      <div class="card-body">MIT's digital design course notes, slides, and problem sets. Covers combinational logic, sequential logic, ISA design, pipelining. Freely available including all solutions.</div>
+      <table class="kv" style="margin-top:8px;">
+        <tr><td>Course link</td><td><a href="https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/" target="_blank">MIT OCW 6.004</a></td></tr>
+        <tr><td>Lectures</td><td>All video lectures freely on YouTube and OCW</td></tr>
+      </table>
+    </div>
+
+    <div class="card card-accent-amber">
+      <div class="card-tag tag-amber">Free online — Patterson & Hennessy</div>
+      <div class="card-title">Computer Organization and Design — RISC-V Edition</div>
+      <div style="font-size:0.8rem;color:var(--ink3);margin-bottom:6px;">Patterson & Hennessy · Turing Award winners</div>
+      <div class="card-body">The canonical computer architecture text. For VLSI students, focus on the datapath and control chapters which show how RTL maps to real hardware. Available to borrow on Internet Archive.</div>
+      <table class="kv" style="margin-top:8px;">
+        <tr><td>Archive borrow</td><td><a href="https://archive.org/search?query=patterson+hennessy+risc-v" target="_blank">archive.org — free borrow</a></td></tr>
+        <tr><td>Key chapters</td><td>Ch. 4 (datapath) and Ch. 5 (pipelining) — essential for VLSI</td></tr>
+      </table>
+    </div>
+
+    <div class="card card-accent-violet">
+      <div class="card-tag tag-violet">Free — Springer Open Access</div>
+      <div class="card-title">Introduction to Logic Circuits & Logic Design with Verilog</div>
+      <div style="font-size:0.8rem;color:var(--ink3);margin-bottom:6px;">Brock LaMeres · Springer · Open Access</div>
+      <div class="card-body">Officially free from Springer! Covers logic circuits through Verilog with FPGA implementation examples. Undergraduate level, clear explanations. One of the best free Verilog textbooks available.</div>
+      <table class="kv" style="margin-top:8px;">
+        <tr><td>Free PDF</td><td><a href="https://link.springer.com/book/10.1007/978-3-030-13605-5" target="_blank">link.springer.com — Download free</a></td></tr>
+        <tr><td>Type</td><td>Official open access — no login needed</td></tr>
+      </table>
+    </div>
+
+    <div class="card card-accent-emerald">
+      <div class="card-tag tag-emerald">Free — OpenCores community</div>
+      <div class="card-title">Verilog HDL Guide — Doulos</div>
+      <div style="font-size:0.8rem;color:var(--ink3);margin-bottom:6px;">Industry-grade reference guide</div>
+      <div class="card-body">Doulos's free Verilog and SystemVerilog reference guides are used by professional chip designers worldwide. Concise, precise, and industry-relevant. Keep this open while coding.</div>
+      <table class="kv" style="margin-top:8px;">
+        <tr><td>Verilog guide</td><td><a href="https://www.doulos.com/knowhow/verilog/" target="_blank">doulos.com/knowhow/verilog</a></td></tr>
+        <tr><td>SV guide</td><td><a href="https://www.doulos.com/knowhow/systemverilog/" target="_blank">doulos.com — SystemVerilog</a></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="sec-h2">YouTube Courses — Free Video Learning</div>
+
+  <div class="grid-2">
+    <div class="card card-accent-blue">
+      <div class="card-title">Neso Academy — Digital Electronics</div>
+      <div class="card-body" style="margin-top:6px;">Complete digital electronics series from Boolean algebra to sequential logic. Clear explanations, 1M+ subscribers. Best starting point before touching Verilog.</div>
+      <table class="kv" style="margin-top:8px;">
+        <tr><td>Playlist</td><td><a href="https://youtube.com/playlist?list=PLBlnK6fEyqRjMH3mWf6kwqiTbT798eAOm" target="_blank">YouTube — Digital Electronics</a></td></tr>
+        <tr><td>Videos</td><td>100+ videos, each 10–20 minutes</td></tr>
+      </table>
+    </div>
+    <div class="card card-accent-teal">
+      <div class="card-title">NPTEL — VLSI Design (IIT Madras)</div>
+      <div class="card-body" style="margin-top:6px;">Free IIT Madras course on VLSI design. Covers CMOS, HDL, synthesis, and layout. Internationally recognized and highly detailed. Available free with certificate option.</div>
+      <table class="kv" style="margin-top:8px;">
+        <tr><td>Course link</td><td><a href="https://nptel.ac.in/courses/117106093" target="_blank">nptel.ac.in — VLSI Design</a></td></tr>
+        <tr><td>Platform</td><td>Free to audit · SWAYAM NPTEL</td></tr>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════ VERILOG ═══════════ -->
+<div class="section" id="sec-verilog">
+
+  <!-- AI Verilog Assistant -->
+  <div class="ai-box" style="margin-bottom:16px;">
+    <div class="ai-box-label">🤖 Verilog AI Assistant</div>
+    <div class="ai-box-title">Generate, explain, or debug Verilog code</div>
+    <div class="ai-box-body">Ask Claude to write a module, explain a concept, or debug your code. Paste your Verilog below for instant feedback.</div>
+    <div class="ai-box-footer">
+      <button class="ai-btn" onclick="askAI('Write a Verilog module for a 4-bit ripple carry adder with carry out. Include comments explaining each line.')">4-bit adder</button>
+      <button class="ai-btn" onclick="askAI('Write a Verilog testbench for a D flip-flop with synchronous reset. Include edge cases.')">Testbench example</button>
+      <button class="ai-btn" onclick="askAI('Write a Verilog FSM for a traffic light controller with states RED, GREEN, YELLOW. Mealy machine.')">FSM example</button>
+      <button class="ai-btn" onclick="askAI('Explain blocking vs non-blocking assignments in Verilog with a concrete example showing the difference in simulation behavior.')">Blocking vs non-blocking</button>
+    </div>
+  </div>
+
+  <div id="verilog-ai-resp" style="display:none;" class="card card-accent-blue">
+    <div class="card-tag tag-blue">Claude's response</div>
+    <div id="verilog-ai-body" style="font-size:0.84rem;line-height:1.7;color:var(--ink2);white-space:pre-wrap;font-family:var(--mono);margin-top:8px;"></div>
+  </div>
+
+  <div class="sec-h2">Verilog Fundamentals</div>
+
+  <div class="sec-h3">Module Structure — The Building Block of Every Verilog Design</div>
+  <div class="card card-accent-blue">
+    <div class="card-body">Every Verilog design is made of <strong>modules</strong>. Think of a module like a function in programming — it has inputs, outputs, and internal logic. Here's the standard structure:</div>
+    <div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">Copy</button><span class="cmt">// Module: AND gate example</span>
+<span class="kw">module</span> <span class="mod">and_gate</span> (
+  <span class="kw">input</span>  <span class="kw">wire</span> a,         <span class="cmt">// Input port a</span>
+  <span class="kw">input</span>  <span class="kw">wire</span> b,         <span class="cmt">// Input port b</span>
+  <span class="kw">output</span> <span class="kw">wire</span> y          <span class="cmt">// Output port y</span>
+);
+  <span class="cmt">// Dataflow (continuous assignment)</span>
+  <span class="kw">assign</span> y = a <span class="op">&amp;</span> b;      <span class="cmt">// AND logic</span>
+<span class="kw">endmodule</span></div>
+    <div class="badges">
+      <span class="badge badge-blue">wire — for combinational</span>
+      <span class="badge badge-teal">reg — for procedural blocks</span>
+      <span class="badge badge-amber">assign — continuous</span>
+    </div>
+  </div>
+
+  <div class="sec-h3">Behavioral Modeling — Always Blocks</div>
+  <div class="card card-accent-teal">
+    <div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">Copy</button><span class="cmt">// D Flip-flop with synchronous reset</span>
+<span class="kw">module</span> <span class="mod">d_ff</span> (
+  <span class="kw">input</span>  <span class="kw">wire</span> clk, rst, d,
+  <span class="kw">output</span> <span class="kw">reg</span>  q
+);
+  <span class="cmt">// Sequential: triggered on clock edge</span>
+  <span class="kw">always</span> @(<span class="kw">posedge</span> clk) <span class="kw">begin</span>
+    <span class="kw">if</span> (rst)
+      q &lt;= <span class="num">1'b0</span>;         <span class="cmt">// Non-blocking assignment!</span>
+    <span class="kw">else</span>
+      q &lt;= d;
+  <span class="kw">end</span>
+<span class="kw">endmodule</span></div>
+    <div class="info-box ib-amber" style="margin-top:8px;">
+      <div class="info-label">Critical rule</div>
+      <p>Always use <code>&lt;=</code> (non-blocking) inside <code>always @(posedge clk)</code> blocks. Use <code>=</code> (blocking) only in combinational <code>always @(*)</code> blocks. Mixing them causes simulation vs synthesis mismatches.</p>
+    </div>
+  </div>
+
+  <div class="sec-h3">4-bit Ripple Carry Adder — Structural Modeling</div>
+  <div class="card card-accent-violet">
+    <div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">Copy</button><span class="cmt">// Full adder module</span>
+<span class="kw">module</span> <span class="mod">full_adder</span> (
+  <span class="kw">input</span>  a, b, cin,
+  <span class="kw">output</span> sum, cout
+);
+  <span class="kw">assign</span> sum  = a ^ b ^ cin;
+  <span class="kw">assign</span> cout = (a &amp; b) | (b &amp; cin) | (a &amp; cin);
+<span class="kw">endmodule</span>
+
+<span class="cmt">// 4-bit Ripple Carry Adder — instantiates 4 full adders</span>
+<span class="kw">module</span> <span class="mod">rca_4bit</span> (
+  <span class="kw">input</span>  [<span class="num">3</span>:<span class="num">0</span>] a, b,
+  <span class="kw">input</span>         cin,
+  <span class="kw">output</span> [<span class="num">3</span>:<span class="num">0</span>] sum,
+  <span class="kw">output</span>        cout
+);
+  <span class="kw">wire</span> [<span class="num">2</span>:<span class="num">0</span>] carry;   <span class="cmt">// Internal carry signals</span>
+
+  <span class="mod">full_adder</span> fa0 (.a(a[<span class="num">0</span>]),.b(b[<span class="num">0</span>]),.cin(cin),     .sum(sum[<span class="num">0</span>]),.cout(carry[<span class="num">0</span>]));
+  <span class="mod">full_adder</span> fa1 (.a(a[<span class="num">1</span>]),.b(b[<span class="num">1</span>]),.cin(carry[<span class="num">0</span>]),.sum(sum[<span class="num">1</span>]),.cout(carry[<span class="num">1</span>]));
+  <span class="mod">full_adder</span> fa2 (.a(a[<span class="num">2</span>]),.b(b[<span class="num">2</span>]),.cin(carry[<span class="num">1</span>]),.sum(sum[<span class="num">2</span>]),.cout(carry[<span class="num">2</span>]));
+  <span class="mod">full_adder</span> fa3 (.a(a[<span class="num">3</span>]),.b(b[<span class="num">3</span>]),.cin(carry[<span class="num">2</span>]),.sum(sum[<span class="num">3</span>]),.cout(cout));
+<span class="kw">endmodule</span></div>
+  </div>
+
+  <div class="sec-h3">Testbench Template</div>
+  <div class="card card-accent-emerald">
+    <div class="card-body">Every design needs a testbench. Here's the standard template — copy and adapt for any module you write:</div>
+    <div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">Copy</button><span class="cmt">// Testbench for rca_4bit</span>
+<span class="kw">module</span> <span class="mod">tb_rca</span>;                 <span class="cmt">// No ports in testbench!</span>
+  <span class="cmt">// Declare signals (use reg for driven, wire for outputs)</span>
+  <span class="kw">reg</span>  [<span class="num">3</span>:<span class="num">0</span>] a, b;
+  <span class="kw">reg</span>        cin;
+  <span class="kw">wire</span> [<span class="num">3</span>:<span class="num">0</span>] sum;
+  <span class="kw">wire</span>       cout;
+
+  <span class="cmt">// Instantiate Device Under Test (DUT)</span>
+  <span class="mod">rca_4bit</span> dut (.a(a),.b(b),.cin(cin),.sum(sum),.cout(cout));
+
+  <span class="kw">initial begin</span>
+    <span class="sig">$dumpfile</span>(<span class="str">"tb.vcd"</span>); <span class="sig">$dumpvars</span>(<span class="num">0</span>, tb_rca);  <span class="cmt">// GTKWave dump</span>
+    <span class="cmt">// Test vectors</span>
+    a=<span class="num">4'd3</span>;  b=<span class="num">4'd5</span>;  cin=<span class="num">0</span>; #<span class="num">10</span>;
+    <span class="sig">$display</span>(<span class="str">"3+5=%0d cout=%b"</span>, sum, cout);
+    a=<span class="num">4'd15</span>; b=<span class="num">4'd1</span>;  cin=<span class="num">0</span>; #<span class="num">10</span>;
+    <span class="sig">$display</span>(<span class="str">"15+1=%0d cout=%b"</span>, sum, cout);
+    <span class="sig">$finish</span>;
+  <span class="kw">end</span>
+<span class="kw">endmodule</span></div>
+  </div>
+
+  <div class="sec-h2">Common Pitfalls — Don't Make These Mistakes</div>
+  <div class="card card-accent-coral">
+    <table class="kv">
+      <tr><td>Latch inference</td><td>If an <code>always @(*)</code> block doesn't assign an output in every branch of an <code>if/case</code>, the synthesiser infers a latch. Always use <code>default</code> in <code>case</code> statements and cover all conditions.</td></tr>
+      <tr><td>Blocking in sequential</td><td>Using <code>=</code> instead of <code>&lt;=</code> in clocked always blocks causes race conditions in simulation and incorrect synthesis. Use <code>&lt;=</code> always in sequential blocks.</td></tr>
+      <tr><td>Sensitivity list</td><td>In Verilog-2001, use <code>always @(*)</code> for combinational — never manually list signals. One missing signal causes simulation vs synthesis mismatch.</td></tr>
+      <tr><td>Integer division</td><td>Verilog integers truncate. <code>5/2 = 2</code>, not 2.5. Use explicit widths and be careful with signed arithmetic.</td></tr>
+      <tr><td>Multiple drivers</td><td>Never drive a wire from two <code>assign</code> statements — causes X (unknown) in simulation. Use <code>mux</code> logic instead.</td></tr>
+    </table>
+  </div>
+
+</div>
+
+<!-- ═══════════ FPGA ═══════════ -->
+<div class="section" id="sec-fpga">
+
+  <div class="ai-box" style="margin-bottom:16px;">
+    <div class="ai-box-label">🤖 FPGA AI Guide</div>
+    <div class="ai-box-title">Ask about FPGA tools, boards, and constraints</div>
+    <div class="ai-box-footer">
+      <button class="ai-btn" onclick="askAI('Explain the FPGA design flow: from Verilog code to programmed bitstream. Step by step for a beginner.')">FPGA design flow</button>
+      <button class="ai-btn" onclick="askAI('What FPGA board should a BSc Level 4 student buy? Compare Basys 3, Nexys A7, and DE10-Lite with prices and features.')">Which FPGA board?</button>
+      <button class="ai-btn" onclick="askAI('Write a Xilinx constraints XDC file for a 100MHz clock and 4 LEDs on a Basys 3 board.')">XDC file example</button>
+    </div>
+  </div>
+
+  <div class="sec-h2">FPGA Architecture</div>
+
+  <div class="card card-accent-blue">
+    <div class="card-tag tag-blue">What is an FPGA?</div>
+    <div class="card-title">Field-Programmable Gate Array — Reconfigurable Hardware</div>
+    <div class="card-body">An FPGA is a chip containing thousands of configurable logic blocks (CLBs), flip-flops, and programmable interconnects. You program it with a bitstream generated from your Verilog/VHDL design. Unlike an ASIC (fixed forever), an FPGA can be reprogrammed as many times as needed — perfect for prototyping.</div>
+    <div class="badges" style="margin-top:10px;">
+      <span class="badge badge-blue">LUT (Look-Up Table)</span>
+      <span class="badge badge-teal">CLB (Configurable Logic Block)</span>
+      <span class="badge badge-amber">IOB (I/O Block)</span>
+      <span class="badge badge-violet">DSP48 (Math blocks)</span>
+      <span class="badge badge-emerald">BRAM (Block RAM)</span>
+    </div>
+  </div>
+
+  <div class="sec-h2">FPGA Design Flow</div>
+
+  <div class="card">
+    <div style="display:flex;gap:0;overflow-x:auto;padding-bottom:8px;">
+      <div style="flex:1;min-width:90px;text-align:center;padding:8px 4px;">
+        <div style="background:var(--accent);color:#fff;border-radius:6px;padding:8px 4px;font-size:0.72rem;font-weight:600;margin-bottom:6px;">1. Design</div>
+        <div style="font-size:0.7rem;color:var(--ink3);">Write Verilog HDL modules</div>
+      </div>
+      <div style="display:flex;align-items:center;color:var(--ink3);font-size:1.2rem;padding:0 2px;">→</div>
+      <div style="flex:1;min-width:90px;text-align:center;padding:8px 4px;">
+        <div style="background:var(--teal);color:#fff;border-radius:6px;padding:8px 4px;font-size:0.72rem;font-weight:600;margin-bottom:6px;">2. Simulate</div>
+        <div style="font-size:0.7rem;color:var(--ink3);">Testbench + Icarus / ModelSim</div>
+      </div>
+      <div style="display:flex;align-items:center;color:var(--ink3);font-size:1.2rem;padding:0 2px;">→</div>
+      <div style="flex:1;min-width:90px;text-align:center;padding:8px 4px;">
+        <div style="background:var(--amber);color:#fff;border-radius:6px;padding:8px 4px;font-size:0.72rem;font-weight:600;margin-bottom:6px;">3. Synthesise</div>
+        <div style="font-size:0.7rem;color:var(--ink3);">Vivado / Quartus → netlist</div>
+      </div>
+      <div style="display:flex;align-items:center;color:var(--ink3);font-size:1.2rem;padding:0 2px;">→</div>
+      <div style="flex:1;min-width:90px;text-align:center;padding:8px 4px;">
+        <div style="background:var(--violet);color:#fff;border-radius:6px;padding:8px 4px;font-size:0.72rem;font-weight:600;margin-bottom:6px;">4. Implement</div>
+        <div style="font-size:0.7rem;color:var(--ink3);">Place & route + timing</div>
+      </div>
+      <div style="display:flex;align-items:center;color:var(--ink3);font-size:1.2rem;padding:0 2px;">→</div>
+      <div style="flex:1;min-width:90px;text-align:center;padding:8px 4px;">
+        <div style="background:var(--emerald);color:#fff;border-radius:6px;padding:8px 4px;font-size:0.72rem;font-weight:600;margin-bottom:6px;">5. Program</div>
+        <div style="font-size:0.7rem;color:var(--ink3);">Generate bitstream → board</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-h2">FPGA Boards Comparison</div>
+
+  <div class="grid-2">
+    <div class="card card-accent-blue" style="border:2px solid var(--accent);">
+      <div class="card-tag tag-blue">⭐ Best for students</div>
+      <div class="card-title">Basys 3 — Xilinx Artix-7</div>
+      <div class="card-body">The most popular student FPGA board. 33,280 logic cells, 16 switches, 16 LEDs, 4-digit 7-segment display, UART, VGA. Full Vivado support. Digilent sells them with student discounts.</div>
+      <table class="kv" style="margin-top:8px;">
+        <tr><td>Price</td><td>~$150 full / $100 student via Digilent</td></tr>
+        <tr><td>Tool</td><td>Xilinx Vivado (free WebPACK edition)</td></tr>
+        <tr><td>Resources</td><td><a href="https://digilent.com/reference/programmable-logic/basys-3/start" target="_blank">Official reference docs</a></td></tr>
+      </table>
+    </div>
+    <div class="card card-accent-teal">
+      <div class="card-title">DE10-Lite — Intel Cyclone V</div>
+      <div class="card-body">Intel/Altera Cyclone V with Arduino shield compatibility. Used in NIOS II soft processor designs. Cheaper than Basys 3, good for beginners.</div>
+      <table class="kv" style="margin-top:8px;">
+        <tr><td>Price</td><td>~$55 — one of the cheapest student boards</td></tr>
+        <tr><td>Tool</td><td>Intel Quartus Prime (free Lite edition)</td></tr>
+        <tr><td>Resources</td><td><a href="https://www.terasic.com.tw/cgi-bin/page/archive.pl?Language=English&CategoryNo=234&No=1021" target="_blank">Terasic official page</a></td></tr>
+      </table>
+    </div>
+    <div class="card card-accent-emerald">
+      <div class="card-title">iCEstick — Lattice iCE40</div>
+      <div class="card-body">Ultra-cheap (~$25). Fully supported by open-source tools (Yosys + nextpnr). Great for learning the open-source FPGA flow without paying for Xilinx/Altera tools.</div>
+      <table class="kv" style="margin-top:8px;">
+        <tr><td>Price</td><td>~$25 from Mouser/Digikey</td></tr>
+        <tr><td>Tool</td><td>Open-source: Yosys + nextpnr + IceStorm</td></tr>
+        <tr><td>Beginner guide</td><td><a href="https://www.latticesemi.com/iCEstick" target="_blank">Lattice official page</a></td></tr>
+      </table>
+    </div>
+    <div class="card card-accent-amber">
+      <div class="card-title">No board? Use EDAplayground online</div>
+      <div class="card-body">Browser-based Verilog simulation — no installation, no board needed. Supports Icarus, ModelSim, VCS. Write, simulate, and view waveforms entirely in the browser. Perfect for students without access to an FPGA board.</div>
+      <table class="kv" style="margin-top:8px;">
+        <tr><td>Link</td><td><a href="https://www.edaplayground.com" target="_blank">edaplayground.com — free</a></td></tr>
+        <tr><td>Tip</td><td>Use Icarus + GTKWave option for waveform viewing</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="sec-h2">Free FPGA Learning Projects</div>
+
+  <div class="grid-2">
+    <div class="card card-accent-blue">
+      <div class="card-tag tag-blue">Project 1 — Beginner</div>
+      <div class="card-title">LED Blinker with Counter</div>
+      <div class="card-body">Use a clock divider to blink an LED at 1Hz. Classic first FPGA project. Teaches: clock dividers, registers, basic I/O constraints.</div>
+      <div class="badges" style="margin-top:8px;"><span class="badge badge-blue">Counter</span><span class="badge badge-teal">Clock div</span><span class="badge badge-gray">IO constraints</span></div>
+    </div>
+    <div class="card card-accent-teal">
+      <div class="card-tag tag-teal">Project 2 — Beginner</div>
+      <div class="card-title">7-Segment Decoder</div>
+      <div class="card-body">Display hexadecimal digits on a 7-segment display. Teaches: combinational logic, case statements, I/O mapping, multi-digit multiplexing.</div>
+      <div class="badges" style="margin-top:8px;"><span class="badge badge-teal">Combinational</span><span class="badge badge-blue">Mux</span><span class="badge badge-gray">I/O</span></div>
+    </div>
+    <div class="card card-accent-amber">
+      <div class="card-tag tag-amber">Project 3 — Intermediate</div>
+      <div class="card-title">UART Transmitter / Receiver</div>
+      <div class="card-body">Implement RS-232 serial communication in Verilog. Teaches: FSM design, baud rate generation, shift registers, protocol timing.</div>
+      <div class="badges" style="margin-top:8px;"><span class="badge badge-amber">FSM</span><span class="badge badge-blue">Protocol</span><span class="badge badge-teal">Shift reg</span></div>
+    </div>
+    <div class="card card-accent-violet">
+      <div class="card-tag tag-violet">Project 4 — Advanced</div>
+      <div class="card-title">VGA Controller</div>
+      <div class="card-body">Generate VGA sync signals and display a pattern on a monitor. Teaches: video timing, pixel clock domains, dual-port memory, colour encoding.</div>
+      <div class="badges" style="margin-top:8px;"><span class="badge badge-violet">VGA timing</span><span class="badge badge-blue">Dual clock</span><span class="badge badge-amber">BRAM</span></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════ HDL CONCEPTS ═══════════ -->
+<div class="section" id="sec-hdl">
+
+  <div class="ai-box" style="margin-bottom:16px;">
+    <div class="ai-box-label">🤖 Concept Explainer</div>
+    <div class="ai-box-title">Ask Claude to explain any HDL concept with examples</div>
+    <div class="ai-box-footer">
+      <button class="ai-btn" onclick="askAI('Explain clock domain crossing in VLSI design. What problems does it cause and how do you fix it with synchronizers? Give a Verilog example.')">Clock domain crossing</button>
+      <button class="ai-btn" onclick="askAI('Explain setup time and hold time violations in FPGA timing analysis. How do you fix them in Vivado?')">Timing violations</button>
+      <button class="ai-btn" onclick="askAI('What is the difference between synchronous and asynchronous reset in Verilog? Which should I use and why?')">Sync vs async reset</button>
+      <button class="ai-btn" onclick="askAI('Explain pipeline stages in digital design. How do you add pipeline registers to improve clock frequency in Verilog?')">Pipelining</button>
+    </div>
+  </div>
+
+  <div class="sec-h2">Key HDL Concepts for BSc Level 4</div>
+
+  <div class="card card-accent-blue">
+    <div class="card-tag tag-blue">Concept 1 — Fundamental</div>
+    <div class="card-title">Synthesis vs Simulation</div>
+    <div class="card-body">Simulation runs your Verilog on a computer to check behaviour. Synthesis converts Verilog to actual logic gates (netlist) that can be placed on an FPGA or ASIC. Not all Verilog is synthesisable — <code>$display</code>, <code>#delays</code>, and <code>initial</code> blocks are simulation-only constructs.</div>
+    <table class="kv" style="margin-top:10px;">
+      <tr><td>Simulation only</td><td><code>$display</code>, <code>$monitor</code>, <code>#delay</code>, <code>$finish</code>, <code>initial begin</code></td></tr>
+      <tr><td>Synthesisable</td><td><code>always @(posedge clk)</code>, <code>assign</code>, <code>if/else</code>, <code>case</code>, modules</td></tr>
+      <tr><td>Rule</td><td>Never put simulation-only constructs in your design files. Only put them in testbenches.</td></tr>
+    </table>
+  </div>
+
+  <div class="card card-accent-teal">
+    <div class="card-tag tag-teal">Concept 2 — Critical</div>
+    <div class="card-title">Finite State Machines (FSM)</div>
+    <div class="card-body">FSMs are the core of sequential digital design. Every controller, protocol handler, and interface is an FSM. There are two types — learn both.</div>
+    <table class="kv" style="margin-top:10px;">
+      <tr><td>Mealy FSM</td><td>Output depends on current state AND inputs. Faster response (output changes immediately with input). More complex.</td></tr>
+      <tr><td>Moore FSM</td><td>Output depends only on current state. Simpler, safer, preferred in FPGA design.</td></tr>
+      <tr><td>3-block FSM style</td><td>Block 1: state register (sequential). Block 2: next-state logic (combinational). Block 3: output logic (combinational). This is the industry-standard coding style.</td></tr>
+    </table>
+    <div class="code-block" style="margin-top:10px;">
+<span class="cmt">// Moore FSM — 3-block style</span>
+<span class="kw">module</span> <span class="mod">traffic_light</span> (
+  <span class="kw">input</span>  clk, rst,
+  <span class="kw">output reg</span> [<span class="num">1</span>:<span class="num">0</span>] light  <span class="cmt">// 00=RED 01=GREEN 10=YELLOW</span>
+);
+  <span class="cmt">// State encoding</span>
+  <span class="kw">parameter</span> RED=<span class="num">2'd0</span>, GREEN=<span class="num">2'd1</span>, YELLOW=<span class="num">2'd2</span>;
+  <span class="kw">reg</span> [<span class="num">1</span>:<span class="num">0</span>] state, next;
+
+  <span class="cmt">// Block 1: State register</span>
+  <span class="kw">always</span> @(<span class="kw">posedge</span> clk) <span class="kw">begin</span>
+    <span class="kw">if</span> (rst) state &lt;= RED; <span class="kw">else</span> state &lt;= next;
+  <span class="kw">end</span>
+
+  <span class="cmt">// Block 2: Next-state logic</span>
+  <span class="kw">always</span> @(*) <span class="kw">begin</span>
+    <span class="kw">case</span> (state)
+      RED:    next = GREEN;
+      GREEN:  next = YELLOW;
+      YELLOW: next = RED;
+      <span class="kw">default</span>: next = RED;
+    <span class="kw">endcase</span>
+  <span class="kw">end</span>
+
+  <span class="cmt">// Block 3: Output logic (Moore — only depends on state)</span>
+  <span class="kw">always</span> @(*) light = state;
+<span class="kw">endmodule</span></div>
+  </div>
+
+  <div class="card card-accent-amber">
+    <div class="card-tag tag-amber">Concept 3 — Timing</div>
+    <div class="card-title">Setup Time, Hold Time & Critical Path</div>
+    <div class="card-body">The most common cause of FPGA timing failures at BSc level.</div>
+    <table class="kv" style="margin-top:10px;">
+      <tr><td>Setup time</td><td>Data must be stable BEFORE the clock edge for at least t_su. Violating this means data might not be latched correctly. Caused by logic being too slow (long critical path).</td></tr>
+      <tr><td>Hold time</td><td>Data must stay stable AFTER the clock edge for at least t_h. Violating this corrupts the flip-flop. Caused by clock skew or very fast combinational paths.</td></tr>
+      <tr><td>Critical path</td><td>The longest combinational path between two flip-flops. It determines your maximum clock frequency: f_max = 1 / (critical_path + t_su + t_clk_to_q)</td></tr>
+      <tr><td>Fix setup violation</td><td>Insert pipeline registers to break long paths. Reduce logic depth. Use faster carry chains (e.g. DSP48 blocks for arithmetic).</td></tr>
+      <tr><td>View in Vivado</td><td>Reports → Timing → Check Timing. The critical path is highlighted. WNS (Worst Negative Slack) should be &gt; 0.</td></tr>
+    </table>
+  </div>
+
+  <div class="card card-accent-violet">
+    <div class="card-tag tag-violet">Concept 4 — Advanced</div>
+    <div class="card-title">Clock Domain Crossing (CDC)</div>
+    <div class="card-body">When signals cross between different clock domains, metastability can occur — the flip-flop output becomes unpredictable. Always synchronise signals crossing clock domains using a 2-flop synchroniser (for single-bit signals) or a FIFO (for multi-bit data).</div>
+    <div class="info-box ib-amber" style="margin-top:8px;">
+      <div class="info-label">Golden rule</div>
+      <p>Never directly connect a signal from one clock domain to logic in another clock domain without a synchroniser. This is the #1 cause of intermittent failures in digital designs that "pass simulation but fail on hardware."</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════ TOOLS ═══════════ -->
+<div class="section" id="sec-tools">
+
+  <div class="sec-h2">Free EDA Tools — Complete Setup Guide</div>
+
+  <div class="grid-2">
+    <div class="card card-accent-blue">
+      <div class="card-tag tag-blue">Synthesis & Implementation — Xilinx</div>
+      <div class="card-title">Xilinx Vivado Design Suite (WebPACK)</div>
+      <div class="card-body">The industry-standard tool for Xilinx FPGAs (Basys 3, Nexys A7, Arty). WebPACK edition is completely free and supports all student-grade boards. Simulation, synthesis, implementation, bitstream generation all in one.</div>
+      <table class="kv" style="margin-top:8px;">
+        <tr><td>Download</td><td><a href="https://www.xilinx.com/support/download.html" target="_blank">xilinx.com/support/download</a></td></tr>
+        <tr><td>Edition</td><td>WebPACK — free, no license needed</td></tr>
+        <tr><td>Size</td><td>~50GB — install on SSD</td></tr>
+        <tr><td>OS</td><td>Windows 10/11 + Ubuntu 20.04</td></tr>
+      </table>
+    </div>
+    <div class="card card-accent-teal">
+      <div class="card-tag tag-teal">Synthesis & Implementation — Intel</div>
+      <div class="card-title">Intel Quartus Prime (Lite Edition)</div>
+      <div class="card-body">Free tool for Intel/Altera FPGAs (DE10-Lite, Cyclone V). Lite edition supports all popular student boards. Includes ModelSim for simulation.</div>
+      <table class="kv" style="margin-top:8px;">
+        <tr><td>Download</td><td><a href="https://www.intel.com/content/www/us/en/collections/products/fpga/software/quartus-prime.html" target="_blank">Intel Quartus download page</a></td></tr>
+        <tr><td>Edition</td><td>Lite — free, no license file needed</td></tr>
+        <tr><td>Simulator</td><td>ModelSim-Altera included</td></tr>
+      </table>
+    </div>
+    <div class="card card-accent-emerald">
+      <div class="card-tag tag-emerald">Open-source simulation — free</div>
+      <div class="card-title">Icarus Verilog + GTKWave</div>
+      <div class="card-body">The open-source Verilog simulator. Icarus compiles and runs your Verilog; GTKWave displays the waveform. Together they replace ModelSim at zero cost. Perfect for Linux/Mac users or anyone who can't install Vivado.</div>
+      <table class="kv" style="margin-top:8px;">
+        <tr><td>Icarus</td><td><a href="http://iverilog.icarus.com" target="_blank">iverilog.icarus.com</a> · <code>sudo apt install iverilog</code></td></tr>
+        <tr><td>GTKWave</td><td><a href="http://gtkwave.sourceforge.net" target="_blank">gtkwave.sourceforge.net</a></td></tr>
+        <tr><td>Usage</td><td><code>iverilog -o sim tb.v design.v && vvp sim</code></td></tr>
+      </table>
+    </div>
+    <div class="card card-accent-violet">
+      <div class="card-tag tag-violet">Browser-based — no install</div>
+      <div class="card-title">EDAplayground</div>
+      <div class="card-body">Run Verilog, VHDL, SystemVerilog in your browser with multiple simulators. GTKWave waveforms in the browser. Great for lab work on university computers without admin rights.</div>
+      <table class="kv" style="margin-top:8px;">
+        <tr><td>Link</td><td><a href="https://www.edaplayground.com" target="_blank">edaplayground.com</a></td></tr>
+        <tr><td>Simulators</td><td>Icarus, Aldec, Cadence, Synopsys VCS</td></tr>
+        <tr><td>Waveforms</td><td>GTKWave embedded in browser</td></tr>
+      </table>
+    </div>
+    <div class="card card-accent-amber">
+      <div class="card-tag tag-amber">Open-source synthesis</div>
+      <div class="card-title">Yosys + nextpnr</div>
+      <div class="card-body">Open-source synthesis and place-and-route for Lattice, Gowin, and ECP5 FPGAs. Used by the open-source FPGA community. Required if using iCEstick or Lattice boards.</div>
+      <table class="kv" style="margin-top:8px;">
+        <tr><td>Yosys</td><td><a href="https://github.com/YosysHQ/yosys" target="_blank">github.com/YosysHQ/yosys</a></td></tr>
+        <tr><td>nextpnr</td><td><a href="https://github.com/YosysHQ/nextpnr" target="_blank">github.com/YosysHQ/nextpnr</a></td></tr>
+        <tr><td>Full toolchain</td><td><a href="https://github.com/YosysHQ/oss-cad-suite-build" target="_blank">OSS CAD Suite — one installer</a></td></tr>
+      </table>
+    </div>
+    <div class="card card-accent-coral">
+      <div class="card-tag tag-coral">AI coding assistant</div>
+      <div class="card-title">Claude / ChatGPT for Verilog</div>
+      <div class="card-body">Use AI to generate Verilog boilerplate, debug synthesis errors, explain timing reports, and write testbenches. Always read and understand every line before submitting. AI is a tutor, not a shortcut.</div>
+      <table class="kv" style="margin-top:8px;">
+        <tr><td>Best prompts</td><td>"Explain this Vivado error: [paste error]" · "Write a Verilog module for X with comments"</td></tr>
+        <tr><td>Rule</td><td>Explain every line to your lab demonstrator — if you can't, rewrite it yourself</td></tr>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════ ROADMAP ═══════════ -->
+<div class="section" id="sec-roadmap">
+
+  <div class="info-box ib-blue" style="margin-bottom:14px;">
+    <div class="info-label">Your VLSI learning path — Level 4 BSc</div>
+    <p>This roadmap goes from absolute beginner to thesis-ready VLSI student in one academic year. Each phase builds on the last — don't skip phases.</p>
+  </div>
+
+  <div class="sec-h2">Phase-by-Phase Roadmap</div>
+
+  <div class="card card-accent-blue" style="margin-bottom:12px;">
+    <div class="card-tag tag-blue">Phase 1 — Months 1–2 · Foundations</div>
+    <div class="card-title">Digital logic from scratch</div>
+    <div class="card-body">Before touching HDL, you must understand the concepts it describes. This phase is all about digital logic theory.</div>
+    <table class="kv" style="margin-top:10px;">
+      <tr><td>Boolean algebra</td><td>AND, OR, NOT, NAND, NOR, XOR. Truth tables. DeMorgan's theorem. Karnaugh maps for simplification.</td></tr>
+      <tr><td>Combinational circuits</td><td>Multiplexers, decoders, encoders, adders (half, full, ripple carry, carry lookahead).</td></tr>
+      <tr><td>Sequential circuits</td><td>SR latch, D latch, D flip-flop, JK flip-flop. Registers. Counters. Difference between latch and flip-flop.</td></tr>
+      <tr><td>Resource</td><td>Neso Academy Digital Electronics playlist + Harris & Harris Ch. 1–4</td></tr>
+      <tr><td>Checkpoint</td><td>Can design a 4-bit counter and a 2-bit multiplier from logic gates on paper.</td></tr>
+    </table>
+  </div>
+
+  <div class="card card-accent-teal" style="margin-bottom:12px;">
+    <div class="card-tag tag-teal">Phase 2 — Months 2–3 · HDL Basics</div>
+    <div class="card-title">Learn Verilog — write real code</div>
+    <div class="card-body">Move from paper circuits to code. Simulate before synthesising. HDLBits is your primary resource this phase.</div>
+    <table class="kv" style="margin-top:10px;">
+      <tr><td>Week 1</td><td>Verilog syntax: module, port, wire, reg, assign. Do HDLBits "Getting Started" and "Wires" section entirely.</td></tr>
+      <tr><td>Week 2</td><td>Vectors, multi-bit operations, part-select. HDLBits "Vectors" section. Write a 4-bit adder.</td></tr>
+      <tr><td>Week 3</td><td>Always blocks, if/case, behavioral modeling. HDLBits "Procedures" section. Write a D flip-flop and a mux.</td></tr>
+      <tr><td>Week 4</td><td>FSMs. Implement a traffic light controller. HDLBits "Finite State Machines" section.</td></tr>
+      <tr><td>Tool</td><td>EDAplayground (no install) or Icarus + GTKWave locally</td></tr>
+      <tr><td>Checkpoint</td><td>Can write and simulate a working FSM with testbench in under 2 hours.</td></tr>
+    </table>
+  </div>
+
+  <div class="card card-accent-amber" style="margin-bottom:12px;">
+    <div class="card-tag tag-amber">Phase 3 — Months 3–4 · FPGA Implementation</div>
+    <div class="card-title">Get onto hardware — use real tools</div>
+    <table class="kv" style="margin-top:10px;">
+      <tr><td>Install tools</td><td>Xilinx Vivado WebPACK or Intel Quartus Lite. Set up an FPGA board or use EDAplayground.</td></tr>
+      <tr><td>First project</td><td>LED blinker → 7-segment display → simple FSM on real hardware.</td></tr>
+      <tr><td>Learn XDC/SDC</td><td>Write constraints files: clock period, I/O timing, pin assignments.</td></tr>
+      <tr><td>Timing analysis</td><td>Read Vivado timing reports. Understand WNS (worst negative slack). Fix one timing violation.</td></tr>
+      <tr><td>Checkpoint</td><td>Working UART or VGA controller synthesised and running on an FPGA board.</td></tr>
+    </table>
+  </div>
+
+  <div class="card card-accent-violet" style="margin-bottom:12px;">
+    <div class="card-tag tag-violet">Phase 4 — Months 4–6 · System Design</div>
+    <div class="card-title">Build complex systems — thesis-level projects</div>
+    <table class="kv" style="margin-top:10px;">
+      <tr><td>RTL design</td><td>Design a complete ALU (arithmetic logic unit) with all operations. Pipelined datapath.</td></tr>
+      <tr><td>Memory systems</td><td>Implement FIFO, BRAM interfaces, SPI/I2C controllers.</td></tr>
+      <tr><td>Verification</td><td>Constrained-random testbenches. Coverage-driven verification basics. SystemVerilog assertions.</td></tr>
+      <tr><td>Soft processor</td><td>Implement a simple 8-bit or 16-bit CPU from scratch in Verilog — the ultimate VLSI project.</td></tr>
+      <tr><td>Checkpoint</td><td>A working pipelined processor or complex system running on FPGA, with full testbench verification.</td></tr>
+    </table>
+  </div>
+
+</div>
+
+<!-- ═══════════ QUIZ ═══════════ -->
+<div class="section" id="sec-quiz">
+
+  <div class="ai-box" style="margin-bottom:16px;">
+    <div class="ai-box-label">🤖 AI Quiz Generator</div>
+    <div class="ai-box-title">Generate a fresh quiz on any VLSI topic</div>
+    <div class="ai-box-footer">
+      <button class="ai-btn" onclick="generateQuiz('Verilog syntax and coding')">Verilog quiz</button>
+      <button class="ai-btn" onclick="generateQuiz('FPGA architecture and timing')">FPGA quiz</button>
+      <button class="ai-btn" onclick="generateQuiz('Finite state machines and sequential logic')">FSM quiz</button>
+      <button class="ai-btn" onclick="generateQuiz('CMOS and transistor-level VLSI design')">CMOS quiz</button>
+      <button class="ai-btn" onclick="generateQuiz('Digital arithmetic: adders, multipliers, ALU design')">Arithmetic quiz</button>
+    </div>
+  </div>
+
+  <div id="quiz-container">
+    <div class="card">
+      <div style="text-align:center;padding:2rem 1rem;color:var(--ink3);">
+        <div style="font-size:2rem;margin-bottom:8px;">🧩</div>
+        <div style="font-size:0.88rem;">Click a quiz topic above to generate questions with AI</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-h2" style="margin-top:20px;">Fixed Practice Questions</div>
+
+  <div class="card card-accent-blue" style="margin-bottom:10px;">
+    <div class="quiz-q">Q1. What is the difference between <code>wire</code> and <code>reg</code> in Verilog?</div>
+    <div class="quiz-options">
+      <button class="quiz-opt" onclick="answerQ(this,'wrong','A wire can store values; a reg cannot.')">A wire can store values; a reg cannot.</button>
+      <button class="quiz-opt" onclick="answerQ(this,'correct','A wire is for continuous assignment and module connections; a reg holds its value and is used in procedural blocks (always, initial).')">A wire is for continuous assignment and module connections; a reg holds its value and is used in procedural blocks.</button>
+      <button class="quiz-opt" onclick="answerQ(this,'wrong','They are identical in Verilog.')">They are identical in Verilog.</button>
+      <button class="quiz-opt" onclick="answerQ(this,'wrong','A reg maps to a physical register on the FPGA; a wire maps to a wire.')">A reg maps to a physical register on the FPGA; a wire maps to a wire.</button>
+    </div>
+    <div class="quiz-explain">✓ Correct. Despite the name, <code>reg</code> doesn't always become a register in hardware — a <code>reg</code> in an <code>always @(*)</code> block becomes combinational logic. The name just means it can be assigned in a procedural block.</div>
+  </div>
+
+  <div class="card card-accent-teal" style="margin-bottom:10px;">
+    <div class="quiz-q">Q2. Which assignment operator should you use inside a clocked <code>always @(posedge clk)</code> block?</div>
+    <div class="quiz-options">
+      <button class="quiz-opt" onclick="answerQ(this,'wrong','= (blocking)')">= (blocking)</button>
+      <button class="quiz-opt" onclick="answerQ(this,'correct','<= (non-blocking)')"><code>&lt;=</code> (non-blocking)</button>
+      <button class="quiz-opt" onclick="answerQ(this,'wrong','Both work the same in clocked blocks.')">Both work the same in clocked blocks.</button>
+    </div>
+    <div class="quiz-explain">✓ Correct. Non-blocking assignments all evaluate the right-hand sides simultaneously, then update — this correctly models flip-flop behaviour where all outputs update at the same clock edge.</div>
+  </div>
+
+  <div class="card card-accent-amber" style="margin-bottom:10px;">
+    <div class="quiz-q">Q3. What does "setup time violation" mean in FPGA timing analysis?</div>
+    <div class="quiz-options">
+      <button class="quiz-opt" onclick="answerQ(this,'wrong','The design took too long to synthesise.')">The design took too long to synthesise.</button>
+      <button class="quiz-opt" onclick="answerQ(this,'wrong','An input pin was not connected.')">An input pin was not connected.</button>
+      <button class="quiz-opt" onclick="answerQ(this,'correct','Data does not arrive at a flip-flop early enough before the clock edge — the combinational path is too long for the requested clock frequency.')">Data does not arrive at a flip-flop early enough before the clock edge — the path is too slow.</button>
+      <button class="quiz-opt" onclick="answerQ(this,'wrong','The clock frequency was defined incorrectly in the constraints file.')">The clock frequency was defined incorrectly in the constraints file.</button>
+    </div>
+    <div class="quiz-explain">✓ Correct. Setup violation (negative WNS) means your critical path is too long. Fix: reduce logic depth, add pipeline registers, or lower your clock frequency.</div>
+  </div>
+
+  <div class="card card-accent-violet" style="margin-bottom:10px;">
+    <div class="quiz-q">Q4. In a Moore FSM, what does the output depend on?</div>
+    <div class="quiz-options">
+      <button class="quiz-opt" onclick="answerQ(this,'wrong','Current inputs only')">Current inputs only</button>
+      <button class="quiz-opt" onclick="answerQ(this,'wrong','Both current state and current inputs')">Both current state and current inputs</button>
+      <button class="quiz-opt" onclick="answerQ(this,'correct','Current state only')">Current state only</button>
+      <button class="quiz-opt" onclick="answerQ(this,'wrong','Previous state and previous inputs')">Previous state and previous inputs</button>
+    </div>
+    <div class="quiz-explain">✓ Correct. Moore: output = f(state). Mealy: output = f(state, inputs). Moore outputs are glitch-free and synchronised to the clock; Mealy outputs respond immediately to input changes.</div>
+  </div>
+
+</div>
+
+<!-- ═══════════ GLOSSARY ═══════════ -->
+<div class="section" id="sec-glossary">
+
+  <div class="ai-box" style="margin-bottom:14px;">
+    <div class="ai-box-label">🤖 Ask about any term</div>
+    <div class="ai-box-title">Confused by a term not in the glossary?</div>
+    <div class="ai-box-footer">
+      <button class="ai-btn" onclick="askAI('Define and explain these VLSI terms with examples: metastability, glitch, race condition, fanout.')">Metastability, glitch, fanout</button>
+      <button class="ai-btn" onclick="askAI('Explain the difference between ASIC and FPGA for a BSc student. When would you choose each?')">ASIC vs FPGA</button>
+    </div>
+  </div>
+
+  <div class="sec-h2">VLSI Glossary — Essential Terms</div>
+
+  <div class="card" style="padding:0;">
+    <div class="gloss-entry"><div class="gloss-term">ALU</div><div class="gloss-def">Arithmetic Logic Unit — performs arithmetic (+, −) and logic (AND, OR, XOR) operations. The computation core of a CPU datapath.</div></div>
+    <div class="gloss-entry"><div class="gloss-term">ASIC</div><div class="gloss-def">Application-Specific Integrated Circuit — a chip designed for one specific purpose, manufactured permanently. High performance, high NRE cost. Cannot be reprogrammed.</div></div>
+    <div class="gloss-entry"><div class="gloss-term">Bitstream</div><div class="gloss-def">The binary file produced after place-and-route that programs the FPGA's configuration memory. Loaded via USB or JTAG.</div></div>
+    <div class="gloss-entry"><div class="gloss-term">CLB</div><div class="gloss-def">Configurable Logic Block — the basic unit of an FPGA. Contains LUTs, flip-flops, carry chains, and multiplexers.</div></div>
+    <div class="gloss-entry"><div class="gloss-term">Clock skew</div><div class="gloss-def">The difference in clock arrival time between two flip-flops in the same clock domain. Causes hold-time violations when negative (clock arrives early at receiver).</div></div>
+    <div class="gloss-entry"><div class="gloss-term">Critical path</div><div class="gloss-def">The combinational path with the longest delay between two sequential elements. Determines maximum clock frequency: f_max = 1 / t_critical_path.</div></div>
+    <div class="gloss-entry"><div class="gloss-term">DFF</div><div class="gloss-def">D Flip-Flop — the fundamental storage element in digital design. Samples input D on the rising clock edge and holds it at output Q until the next clock edge.</div></div>
+    <div class="gloss-entry"><div class="gloss-term">FPGA</div><div class="gloss-def">Field-Programmable Gate Array — reconfigurable chip containing LUTs, flip-flops, DSP blocks, and BRAMs. Programmed using bitstream. Can be reprogrammed unlimited times.</div></div>
+    <div class="gloss-entry"><div class="gloss-term">FSM</div><div class="gloss-def">Finite State Machine — a circuit with a finite number of states, transitions, and outputs. Two types: Moore (output = f(state)) and Mealy (output = f(state, input)).</div></div>
+    <div class="gloss-entry"><div class="gloss-term">HDL</div><div class="gloss-def">Hardware Description Language — a programming language used to describe digital hardware. Main examples: Verilog, VHDL, SystemVerilog.</div></div>
+    <div class="gloss-entry"><div class="gloss-term">Hold time</div><div class="gloss-def">Minimum time data must remain stable AFTER the clock edge for reliable sampling. Hold violations are caused by paths that are too fast (clock skew or minimal logic).</div></div>
+    <div class="gloss-entry"><div class="gloss-term">LUT</div><div class="gloss-def">Look-Up Table — implements any N-input boolean function using a truth table stored in SRAM. A 6-input LUT (LUT6) is the basic logic primitive in most modern FPGAs.</div></div>
+    <div class="gloss-entry"><div class="gloss-term">Metastability</div><div class="gloss-def">An unstable state where a flip-flop output is neither 0 nor 1. Occurs when setup or hold time is violated. Resolved using synchroniser chains for clock domain crossing.</div></div>
+    <div class="gloss-entry"><div class="gloss-term">Netlist</div><div class="gloss-def">The output of synthesis — a circuit described as interconnected gates and flip-flops. The bridge between HDL code and physical layout.</div></div>
+    <div class="gloss-entry"><div class="gloss-term">Pipeline</div><div class="gloss-def">Breaking a combinational path into stages separated by flip-flops. Increases throughput (can start new computation every cycle) but adds latency (takes more cycles to complete one computation).</div></div>
+    <div class="gloss-entry"><div class="gloss-term">RTL</div><div class="gloss-def">Register-Transfer Level — the abstraction level at which HDL is written. Describes how data moves between registers and what operations are performed. The level at which synthesis operates.</div></div>
+    <div class="gloss-entry"><div class="gloss-term">Setup time</div><div class="gloss-def">Minimum time data must be stable BEFORE the clock edge for reliable sampling. Setup violations (negative WNS) mean the critical path is too long for the target clock frequency.</div></div>
+    <div class="gloss-entry"><div class="gloss-term">Testbench</div><div class="gloss-def">A Verilog module with no ports that instantiates your design, applies inputs, and checks outputs. Used for functional verification. Contains simulation-only constructs like <code>$display</code> and <code>#delay</code>.</div></div>
+    <div class="gloss-entry"><div class="gloss-term">VHDL</div><div class="gloss-def">VHSIC Hardware Description Language — the other major HDL. More verbose than Verilog, strongly typed. Common in aerospace and defence. Preferred in Europe; Verilog preferred in US/Asia.</div></div>
+    <div class="gloss-entry"><div class="gloss-term">WNS</div><div class="gloss-def">Worst Negative Slack — the timing margin of the most critical path. WNS > 0 means timing is met. WNS < 0 means timing failure — your design will not work reliably at the target frequency.</div></div>
+  </div>
+
+</div>
+
+<!-- ═══════════ PLAYLISTS ═══════════ -->
+<div class="section" id="sec-playlists">
+
+<style>
+.pl-stage {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 22px 0 10px;
+}
+.pl-stage-num {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--display);
+  font-size: 0.85rem;
+  font-weight: 800;
+  flex-shrink: 0;
+  color: #fff;
+}
+.pl-stage-label {
+  font-family: var(--display);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+.pl-stage-sub {
+  font-size: 0.75rem;
+  color: var(--ink3);
+  margin-left: 4px;
+}
+.pl-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem 1.2rem;
+  margin-bottom: 10px;
+  box-shadow: var(--shadow);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.pl-card:hover { border-color: var(--accent); box-shadow: var(--shadow2); }
+.pl-head {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+.pl-thumb {
+  width: 48px; height: 48px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+.pl-info { flex: 1; min-width: 0; }
+.pl-channel {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--ink3);
+  margin-bottom: 2px;
+}
+.pl-title {
+  font-size: 0.93rem;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.35;
+  margin-bottom: 5px;
+}
+.pl-desc {
+  font-size: 0.81rem;
+  color: var(--ink2);
+  line-height: 1.6;
+  margin-bottom: 8px;
+}
+.pl-meta {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.pl-meta-item {
+  font-size: 0.7rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 2px 8px;
+  color: var(--ink3);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.pl-topics {
+  display: flex; flex-wrap: wrap; gap: 4px;
+  margin-bottom: 10px;
+}
+.pl-topic {
+  font-size: 0.68rem;
+  padding: 2px 8px;
+  border-radius: 99px;
+  background: var(--surface);
+  color: var(--ink3);
+  border: 1px solid var(--border);
+}
+.pl-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--accent);
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background 0.15s;
+  border: none;
+  cursor: pointer;
+  font-family: var(--sans);
+}
+.pl-link:hover { background: var(--accent2); }
+.pl-link-ghost {
+  background: var(--surface);
+  color: var(--accent);
+  border: 1px solid var(--border);
+}
+.pl-link-ghost:hover { background: var(--accent-s); border-color: var(--accent); }
+.pl-star {
+  background: linear-gradient(135deg, var(--amber-s), #fff);
+  border-color: var(--amber);
+  border-width: 2px;
+}
+.diff-pip {
+  display: inline-flex; gap: 3px;
+}
+.pip {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+}
+.pip-on  { background: var(--accent); }
+.pip-off { background: var(--border2); }
+.filter-row {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  align-items: center;
+}
+.filter-row span { font-size: 12px; color: var(--ink3); flex-shrink: 0; }
+.flt-btn {
+  padding: 5px 13px;
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  font-size: 0.72rem;
+  cursor: pointer;
+  background: var(--card);
+  color: var(--ink3);
+  font-family: var(--sans);
+  font-weight: 500;
+  transition: all 0.12s;
+}
+.flt-btn:hover { border-color: var(--accent); color: var(--accent); }
+.flt-btn.on { background: var(--accent); color: #fff; border-color: var(--accent); }
+.watch-later-btn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--ink3);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  font-family: var(--sans);
+  transition: all 0.12s;
+}
+.watch-later-btn:hover { border-color: var(--amber); color: var(--amber); background: var(--amber-s); }
+.watch-later-btn.saved { background: var(--amber-s); border-color: var(--amber); color: var(--amber); }
+</style>
+
+  <div class="info-box ib-blue" style="margin-bottom:14px;">
+    <div class="info-label">How this is organised</div>
+    <p>Every playlist is sorted by learning stage — start from Stage 0 if you're a complete beginner, or jump to your current level. Each entry shows topics covered, video count, difficulty, and a direct link. Use the <strong>Save</strong> button to build your watchlist.</p>
+  </div>
+
+  <!-- Filter bar -->
+  <div class="filter-row">
+    <span>Filter:</span>
+    <button class="flt-btn on" onclick="plFilter('all',this)">All stages</button>
+    <button class="flt-btn" onclick="plFilter('0',this)">Stage 0 — Prerequisites</button>
+    <button class="flt-btn" onclick="plFilter('1',this)">Stage 1 — Digital Logic</button>
+    <button class="flt-btn" onclick="plFilter('2',this)">Stage 2 — Verilog/HDL</button>
+    <button class="flt-btn" onclick="plFilter('3',this)">Stage 3 — FPGA</button>
+    <button class="flt-btn" onclick="plFilter('4',this)">Stage 4 — VLSI/CMOS</button>
+    <button class="flt-btn" onclick="plFilter('5',this)">Stage 5 — Advanced</button>
+    <button class="flt-btn" onclick="plFilter('saved',this)">⭐ Saved</button>
+  </div>
+
+  <div id="pl-list">
+
+  <!-- ══════════ STAGE 0 ══════════ -->
+  <div class="pl-stage" data-stage="0">
+    <div class="pl-stage-num" style="background:var(--ink3);">0</div>
+    <div>
+      <span class="pl-stage-label">Prerequisites</span>
+      <span class="pl-stage-sub">— Before you touch Verilog, understand what hardware IS</span>
+    </div>
+  </div>
+
+  <div class="pl-card" data-stage="0" data-id="ben-eater-8bit">
+    <div class="pl-head">
+      <div class="pl-thumb" style="background:#FEF3C7;">🖥️</div>
+      <div class="pl-info">
+        <div class="pl-channel">Ben Eater · YouTube</div>
+        <div class="pl-title">Building an 8-bit Breadboard Computer from Scratch</div>
+        <div class="pl-desc">The single best resource for understanding digital hardware from first principles. Ben builds a working 8-bit CPU on breadboards using 74-series logic chips — no FPGAs, no abstraction. You see every wire, every gate, every clock tick. Watching this series will make every VLSI concept click permanently. Essential before touching Verilog.</div>
+        <div class="pl-meta">
+          <div class="pl-meta-item">📹 44 videos</div>
+          <div class="pl-meta-item">⏱ ~30 hrs total</div>
+          <div class="pl-meta-item diff-pip"><pip class="pip pip-on"></pip><pip class="pip pip-on"></pip><pip class="pip pip-off"></pip><pip class="pip pip-off"></pip><pip class="pip pip-off"></pip> Beginner</div>
+        </div>
+        <div class="pl-topics">
+          <span class="pl-topic">Clock circuits</span><span class="pl-topic">Registers</span><span class="pl-topic">ALU</span><span class="pl-topic">Bus architecture</span><span class="pl-topic">Program counter</span><span class="pl-topic">RAM</span><span class="pl-topic">Instruction decode</span><span class="pl-topic">Output display</span>
+        </div>
+        <div style="display:flex;gap:7px;flex-wrap:wrap;">
+          <a class="pl-link" href="https://www.youtube.com/playlist?list=PLowKtXNTBypGqImE405J2565dvjafglHU" target="_blank">▶ Watch playlist</a>
+          <button class="watch-later-btn" onclick="savePlaylist(this,'ben-eater-8bit','Building an 8-bit Breadboard Computer')">+ Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pl-card" data-stage="0" data-id="crash-course-cs">
+    <div class="pl-head">
+      <div class="pl-thumb" style="background:#EDE9FE;">⚡</div>
+      <div class="pl-info">
+        <div class="pl-channel">Crash Course · YouTube</div>
+        <div class="pl-title">Computer Science — Full Series (Episodes 1–10)</div>
+        <div class="pl-desc">Watch only episodes 1–10. They cover Boolean logic, binary, ALUs, registers, RAM, and the Von Neumann architecture in an animated, extremely clear format. Perfect 3-hour prerequisite overview before anything else.</div>
+        <div class="pl-meta">
+          <div class="pl-meta-item">📹 10 episodes (of 40)</div>
+          <div class="pl-meta-item">⏱ ~3 hrs</div>
+          <div class="pl-meta-item">🟢 Complete beginner</div>
+        </div>
+        <div class="pl-topics">
+          <span class="pl-topic">Boolean logic</span><span class="pl-topic">Binary</span><span class="pl-topic">ALU intro</span><span class="pl-topic">Registers</span><span class="pl-topic">RAM</span><span class="pl-topic">CPU overview</span>
+        </div>
+        <div style="display:flex;gap:7px;flex-wrap:wrap;">
+          <a class="pl-link" href="https://www.youtube.com/playlist?list=PL8dPuuaLjXtNlUrzyH5r6jN9ulIgZBpdo" target="_blank">▶ Watch playlist</a>
+          <button class="watch-later-btn" onclick="savePlaylist(this,'crash-course-cs','Crash Course CS Ep 1–10')">+ Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ STAGE 1 ══════════ -->
+  <div class="pl-stage" data-stage="1">
+    <div class="pl-stage-num" style="background:var(--accent);">1</div>
+    <div>
+      <span class="pl-stage-label">Digital Logic Fundamentals</span>
+      <span class="pl-stage-sub">— Boolean algebra, gates, flip-flops, counters, FSMs</span>
+    </div>
+  </div>
+
+  <div class="pl-card pl-star" data-stage="1" data-id="neso-digital">
+    <div style="font-size:0.68rem;font-weight:700;color:var(--amber);margin-bottom:6px;">⭐ MOST RECOMMENDED for Stage 1</div>
+    <div class="pl-head">
+      <div class="pl-thumb" style="background:#FEF3C7;">📐</div>
+      <div class="pl-info">
+        <div class="pl-channel">Neso Academy · YouTube</div>
+        <div class="pl-title">Digital Electronics — Complete Course</div>
+        <div class="pl-desc">The most popular and well-structured digital electronics series on YouTube. Starts from number systems and Boolean algebra, goes all the way to synchronous sequential circuits, counters, and shift registers. Every concept explained with worked examples. 1.5M+ subscribers, updated regularly. This should be your primary Stage 1 resource — watch every video.</div>
+        <div class="pl-meta">
+          <div class="pl-meta-item">📹 150+ videos</div>
+          <div class="pl-meta-item">⏱ ~40 hrs total</div>
+          <div class="pl-meta-item">🟢 Beginner → Intermediate</div>
+        </div>
+        <div class="pl-topics">
+          <span class="pl-topic">Number systems</span><span class="pl-topic">Boolean algebra</span><span class="pl-topic">Logic gates</span><span class="pl-topic">K-maps</span><span class="pl-topic">Multiplexers</span><span class="pl-topic">Decoders</span><span class="pl-topic">Adders</span><span class="pl-topic">Flip-flops (SR, JK, D, T)</span><span class="pl-topic">Registers</span><span class="pl-topic">Counters</span><span class="pl-topic">Shift registers</span><span class="pl-topic">Synchronous circuits</span>
+        </div>
+        <div style="display:flex;gap:7px;flex-wrap:wrap;">
+          <a class="pl-link" href="https://www.youtube.com/playlist?list=PLBlnK6fEyqRjMH3mWf6kwqiTbT798eAOm" target="_blank">▶ Watch playlist</a>
+          <button class="watch-later-btn" onclick="savePlaylist(this,'neso-digital','Neso Academy — Digital Electronics')">+ Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pl-card" data-stage="1" data-id="mit-6004">
+    <div class="pl-head">
+      <div class="pl-thumb" style="background:var(--accent-s);">🏛️</div>
+      <div class="pl-info">
+        <div class="pl-channel">MIT OpenCourseWare · YouTube</div>
+        <div class="pl-title">6.004 Computation Structures — Full Lecture Series</div>
+        <div class="pl-desc">MIT's actual undergraduate digital design course, fully free. Goes from combinational logic through sequential circuits, assembly language, pipelining, and memory hierarchy. More rigorous than Neso — watch after Neso for deeper understanding. All problem sets with solutions are free on OCW.</div>
+        <div class="pl-meta">
+          <div class="pl-meta-item">📹 25 lectures</div>
+          <div class="pl-meta-item">⏱ ~35 hrs</div>
+          <div class="pl-meta-item">🔵 Intermediate</div>
+        </div>
+        <div class="pl-topics">
+          <span class="pl-topic">CMOS gates</span><span class="pl-topic">Boolean logic</span><span class="pl-topic">Sequential logic</span><span class="pl-topic">FSM design</span><span class="pl-topic">ISA design</span><span class="pl-topic">Pipelining</span><span class="pl-topic">Memory hierarchy</span><span class="pl-topic">Virtual memory</span>
+        </div>
+        <div style="display:flex;gap:7px;flex-wrap:wrap;">
+          <a class="pl-link" href="https://www.youtube.com/playlist?list=PLUl4u3cNGP62WVs95MNq3dQBqY2vGOtQ2" target="_blank">▶ Watch playlist</a>
+          <a class="pl-link pl-link-ghost" href="https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/" target="_blank">📄 Course notes + problem sets</a>
+          <button class="watch-later-btn" onclick="savePlaylist(this,'mit-6004','MIT 6.004 Computation Structures')">+ Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pl-card" data-stage="1" data-id="statquest-logic">
+    <div class="pl-head">
+      <div class="pl-thumb" style="background:var(--emerald-s);">🔬</div>
+      <div class="pl-info">
+        <div class="pl-channel">Derek Banas · YouTube</div>
+        <div class="pl-title">Digital Logic Design Tutorial — Gates to Circuits</div>
+        <div class="pl-desc">Fast-paced, dense tutorial covering all combinational and sequential logic fundamentals. Good for quick review or catching up before exams. Covers truth tables, K-maps, adders, latches, flip-flops, counters in a compact format.</div>
+        <div class="pl-meta">
+          <div class="pl-meta-item">📹 8 videos</div>
+          <div class="pl-meta-item">⏱ ~6 hrs</div>
+          <div class="pl-meta-item">🟢 Beginner</div>
+        </div>
+        <div class="pl-topics">
+          <span class="pl-topic">Gates</span><span class="pl-topic">K-maps</span><span class="pl-topic">Adders</span><span class="pl-topic">Latches</span><span class="pl-topic">Flip-flops</span><span class="pl-topic">Counters</span>
+        </div>
+        <div style="display:flex;gap:7px;flex-wrap:wrap;">
+          <a class="pl-link" href="https://www.youtube.com/watch?v=M0mx8S05v60" target="_blank">▶ Start watching</a>
+          <button class="watch-later-btn" onclick="savePlaylist(this,'derek-logic','Derek Banas — Digital Logic Design')">+ Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ STAGE 2 ══════════ -->
+  <div class="pl-stage" data-stage="2">
+    <div class="pl-stage-num" style="background:var(--teal);">2</div>
+    <div>
+      <span class="pl-stage-label">Verilog / HDL Coding</span>
+      <span class="pl-stage-sub">— Writing, simulating, and thinking in hardware description languages</span>
+    </div>
+  </div>
+
+  <div class="pl-card pl-star" data-stage="2" data-id="hdlbits-guide">
+    <div style="font-size:0.68rem;font-weight:700;color:var(--amber);margin-bottom:6px;">⭐ DO THIS FIRST for Verilog</div>
+    <div class="pl-head">
+      <div class="pl-thumb" style="background:var(--teal-s);">💻</div>
+      <div class="pl-info">
+        <div class="pl-channel">HDLBits · Interactive exercises</div>
+        <div class="pl-title">HDLBits — 200+ Verilog Exercises (Interactive)</div>
+        <div class="pl-desc">Not a video playlist — but hands-down the most effective way to learn Verilog. Browser-based, instant feedback, progressive difficulty. Structured as: Wires → Vectors → Modules → Procedures → More Verilog → Circuits → Building Larger Circuits → FSMs. Do every single problem. This replaces weeks of textbook reading.</div>
+        <div class="pl-meta">
+          <div class="pl-meta-item">🖥️ 200+ exercises</div>
+          <div class="pl-meta-item">⏱ ~30–50 hrs depending on pace</div>
+          <div class="pl-meta-item">🟢→🔵 Beginner to Intermediate</div>
+        </div>
+        <div class="pl-topics">
+          <span class="pl-topic">Wire & logic</span><span class="pl-topic">Vectors</span><span class="pl-topic">Modules</span><span class="pl-topic">Always blocks</span><span class="pl-topic">Procedural</span><span class="pl-topic">If/case</span><span class="pl-topic">Flip-flops</span><span class="pl-topic">Counters</span><span class="pl-topic">Shift registers</span><span class="pl-topic">FSMs</span><span class="pl-topic">Arithmetic</span><span class="pl-topic">Advanced FSMs</span>
+        </div>
+        <div style="display:flex;gap:7px;flex-wrap:wrap;">
+          <a class="pl-link" href="https://hdlbits.01xz.net/wiki/Problem_sets" target="_blank">▶ Start HDLBits</a>
+          <button class="watch-later-btn" onclick="savePlaylist(this,'hdlbits','HDLBits — 200+ Verilog Exercises')">+ Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pl-card" data-stage="2" data-id="chipverify-sv">
+    <div class="pl-head">
+      <div class="pl-thumb" style="background:var(--violet-s);">📗</div>
+      <div class="pl-info">
+        <div class="pl-channel">Shawn Hymel · YouTube · Digi-Key</div>
+        <div class="pl-title">Introduction to FPGA — Verilog for Beginners</div>
+        <div class="pl-desc">Produced by Digi-Key Electronics. Covers Verilog from zero — module syntax, simulation in Vivado, combinational logic, flip-flops, FSMs. Extremely clear and practical, with full code examples for each video. One of the best structured beginner Verilog video series available.</div>
+        <div class="pl-meta">
+          <div class="pl-meta-item">📹 18 videos</div>
+          <div class="pl-meta-item">⏱ ~10 hrs</div>
+          <div class="pl-meta-item">🟢 Beginner</div>
+        </div>
+        <div class="pl-topics">
+          <span class="pl-topic">Verilog syntax</span><span class="pl-topic">Vivado intro</span><span class="pl-topic">Combinational</span><span class="pl-topic">Sequential</span><span class="pl-topic">Testbenches</span><span class="pl-topic">FSM in Verilog</span><span class="pl-topic">FPGA basics</span>
+        </div>
+        <div style="display:flex;gap:7px;flex-wrap:wrap;">
+          <a class="pl-link" href="https://www.youtube.com/playlist?list=PLEBQazB0HUyT1WmMONxRZn9NmQ_9CIKhb" target="_blank">▶ Watch playlist</a>
+          <button class="watch-later-btn" onclick="savePlaylist(this,'shawn-verilog','Shawn Hymel — Intro to FPGA Verilog')">+ Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pl-card" data-stage="2" data-id="fpga4student">
+    <div class="pl-head">
+      <div class="pl-thumb" style="background:var(--accent-s);">🎓</div>
+      <div class="pl-info">
+        <div class="pl-channel">FPGA4Student · YouTube</div>
+        <div class="pl-title">Verilog HDL Programming — From Basics to Advanced</div>
+        <div class="pl-desc">Step-by-step Verilog series covering every important construct with simulation examples. Particularly good for understanding blocking vs non-blocking assignments, generate statements, parameters, and how synthesis treats different coding styles.</div>
+        <div class="pl-meta">
+          <div class="pl-meta-item">📹 30+ videos</div>
+          <div class="pl-meta-item">⏱ ~15 hrs</div>
+          <div class="pl-meta-item">🟢→🔵 Beginner to Intermediate</div>
+        </div>
+        <div class="pl-topics">
+          <span class="pl-topic">Module instantiation</span><span class="pl-topic">Blocking/non-blocking</span><span class="pl-topic">Parameters</span><span class="pl-topic">Generate</span><span class="pl-topic">Memory models</span><span class="pl-topic">State machines</span>
+        </div>
+        <div style="display:flex;gap:7px;flex-wrap:wrap;">
+          <a class="pl-link" href="https://www.youtube.com/@FPGA4student/videos" target="_blank">▶ Channel videos</a>
+          <button class="watch-later-btn" onclick="savePlaylist(this,'fpga4student','FPGA4Student — Verilog HDL')">+ Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pl-card" data-stage="2" data-id="chipverify">
+    <div class="pl-head">
+      <div class="pl-thumb" style="background:var(--emerald-s);">📘</div>
+      <div class="pl-info">
+        <div class="pl-channel">ChipVerify · Website + Videos</div>
+        <div class="pl-title">SystemVerilog & Verilog Reference — Written + Video</div>
+        <div class="pl-desc">ChipVerify has the most comprehensive free written reference for Verilog and SystemVerilog on the internet. Every construct explained with examples, tables, and simulation waveforms. Bookmark this — use it like a dictionary while coding. The YouTube channel has companion videos for complex topics.</div>
+        <div class="pl-meta">
+          <div class="pl-meta-item">📄 200+ written guides</div>
+          <div class="pl-meta-item">📹 Video companions</div>
+          <div class="pl-meta-item">🔵 Intermediate</div>
+        </div>
+        <div class="pl-topics">
+          <span class="pl-topic">All Verilog constructs</span><span class="pl-topic">SystemVerilog</span><span class="pl-topic">Verification</span><span class="pl-topic">UVM basics</span><span class="pl-topic">Assertions</span>
+        </div>
+        <div style="display:flex;gap:7px;flex-wrap:wrap;">
+          <a class="pl-link" href="https://www.chipverify.com/verilog/verilog-tutorial" target="_blank">▶ Verilog tutorial</a>
+          <a class="pl-link pl-link-ghost" href="https://www.chipverify.com/systemverilog/systemverilog-tutorial" target="_blank">SystemVerilog</a>
+          <button class="watch-later-btn" onclick="savePlaylist(this,'chipverify','ChipVerify — Verilog Reference')">+ Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ STAGE 3 ══════════ -->
+  <div class="pl-stage" data-stage="3">
+    <div class="pl-stage-num" style="background:var(--violet);">3</div>
+    <div>
+      <span class="pl-stage-label">FPGA Design & Implementation</span>
+      <span class="pl-stage-sub">— Vivado, Quartus, place-and-route, real hardware</span>
+    </div>
+  </div>
+
+  <div class="pl-card pl-star" data-stage="3" data-id="digilent-basys3">
+    <div style="font-size:0.68rem;font-weight:700;color:var(--amber);margin-bottom:6px;">⭐ Best for Basys 3 / Xilinx boards</div>
+    <div class="pl-head">
+      <div class="pl-thumb" style="background:var(--violet-s);">🔌</div>
+      <div class="pl-info">
+        <div class="pl-channel">Digilent Inc. · YouTube</div>
+        <div class="pl-title">FPGA Tutorials — Basys 3 & Vivado Complete Guide</div>
+        <div class="pl-desc">Official Digilent tutorials for the Basys 3 — the most popular student FPGA board. Covers Vivado project setup, constraints files (XDC), using switches/LEDs/7-seg, UART, VGA, and more. Every tutorial has a complete GitHub repo with source code. If you own a Basys 3, start here.</div>
+        <div class="pl-meta">
+          <div class="pl-meta-item">📹 20+ tutorials</div>
+          <div class="pl-meta-item">💻 Full source code included</div>
+          <div class="pl-meta-item">🟢 Beginner</div>
+        </div>
+        <div class="pl-topics">
+          <span class="pl-topic">Vivado setup</span><span class="pl-topic">XDC constraints</span><span class="pl-topic">LEDs & switches</span><span class="pl-topic">7-segment mux</span><span class="pl-topic">UART</span><span class="pl-topic">VGA</span><span class="pl-topic">BRAM</span><span class="pl-topic">IP cores</span>
+        </div>
+        <div style="display:flex;gap:7px;flex-wrap:wrap;">
+          <a class="pl-link" href="https://www.youtube.com/@DigilentInc/playlists" target="_blank">▶ Digilent playlists</a>
+          <a class="pl-link pl-link-ghost" href="https://digilent.com/reference/programmable-logic/guides/getting-started-with-ipi" target="_blank">Getting started guide</a>
+          <button class="watch-later-btn" onclick="savePlaylist(this,'digilent','Digilent — Basys 3 FPGA Tutorials')">+ Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pl-card" data-stage="3" data-id="numato-fpga">
+    <div class="pl-head">
+      <div class="pl-thumb" style="background:var(--teal-s);">⚙️</div>
+      <div class="pl-info">
+        <div class="pl-channel">FPGA Systems · YouTube</div>
+        <div class="pl-title">FPGA Design with Vivado — Full Beginner Course</div>
+        <div class="pl-desc">Practical Vivado workflow from scratch — creating projects, writing RTL, running simulation, synthesis, implementation, and generating bitstreams. Covers timing constraints, IP integrator, and reading timing reports. Good complement to Digilent if you want to understand what each Vivado step is doing.</div>
+        <div class="pl-meta">
+          <div class="pl-meta-item">📹 25+ videos</div>
+          <div class="pl-meta-item">⏱ ~12 hrs</div>
+          <div class="pl-meta-item">🟢 Beginner</div>
+        </div>
+        <div class="pl-topics">
+          <span class="pl-topic">Vivado workflow</span><span class="pl-topic">RTL simulation</span><span class="pl-topic">Synthesis reports</span><span class="pl-topic">Timing constraints</span><span class="pl-topic">IP Integrator</span><span class="pl-topic">Bitstream</span>
+        </div>
+        <div style="display:flex;gap:7px;flex-wrap:wrap;">
+          <a class="pl-link" href="https://www.youtube.com/@FPGASystems/videos" target="_blank">▶ Watch videos</a>
+          <button class="watch-later-btn" onclick="savePlaylist(this,'fpga-systems','FPGA Systems — Vivado Course')">+ Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pl-card" data-stage="3" data-id="alchitry-fpga">
+    <div class="pl-head">
+      <div class="pl-thumb" style="background:var(--amber-s);">🛠️</div>
+      <div class="pl-info">
+        <div class="pl-channel">Alchitry · Website + YouTube</div>
+        <div class="pl-title">FPGA Fun — Project Tutorials with Full Source</div>
+        <div class="pl-desc">Alchitry publishes detailed FPGA project tutorials covering UART, SPI, I2C, VGA, PWM, and more with complete source code. Written tutorials go deeper than most YouTube videos. Great for implementing real projects after learning the basics.</div>
+        <div class="pl-meta">
+          <div class="pl-meta-item">📄 30+ written tutorials</div>
+          <div class="pl-meta-item">💻 Full source code</div>
+          <div class="pl-meta-item">🔵 Intermediate</div>
+        </div>
+        <div class="pl-topics">
+          <span class="pl-topic">UART</span><span class="pl-topic">SPI</span><span class="pl-topic">I2C</span><span class="pl-topic">VGA</span><span class="pl-topic">PWM</span><span class="pl-topic">Memory controllers</span>
+        </div>
+        <div style="display:flex;gap:7px;flex-wrap:wrap;">
+          <a class="pl-link" href="https://alchitry.com/tutorials" target="_blank">▶ Browse tutorials</a>
+          <button class="watch-later-btn" onclick="savePlaylist(this,'alchitry','Alchitry — FPGA Project Tutorials')">+ Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ STAGE 4 ══════════ -->
+  <div class="pl-stage" data-stage="4">
+    <div class="pl-stage-num" style="background:var(--amber);">4</div>
+    <div>
+      <span class="pl-stage-label">VLSI Design & CMOS Circuits</span>
+      <span class="pl-stage-sub">— Transistors, layout, power, timing — how chips are actually made</span>
+    </div>
+  </div>
+
+  <div class="pl-card pl-star" data-stage="4" data-id="nptel-vlsi">
+    <div style="font-size:0.68rem;font-weight:700;color:var(--amber);margin-bottom:6px;">⭐ Best free university-level VLSI course</div>
+    <div class="pl-head">
+      <div class="pl-thumb" style="background:var(--amber-s);">🏫</div>
+      <div class="pl-info">
+        <div class="pl-channel">NPTEL IIT Madras · YouTube + SWAYAM</div>
+        <div class="pl-title">VLSI Design — Full Course (IIT Madras)</div>
+        <div class="pl-desc">A complete VLSI design course from IIT Madras — one of Asia's top engineering universities. Covers CMOS technology, VLSI design flow, RTL design, synthesis, physical design, timing analysis, and low-power design. Directly aligned with BSc Level 4 syllabus. Free with optional certificate on SWAYAM.</div>
+        <div class="pl-meta">
+          <div class="pl-meta-item">📹 40+ lectures</div>
+          <div class="pl-meta-item">⏱ ~30 hrs</div>
+          <div class="pl-meta-item">🔵 Intermediate</div>
+        </div>
+        <div class="pl-topics">
+          <span class="pl-topic">CMOS technology</span><span class="pl-topic">VLSI design flow</span><span class="pl-topic">RTL design</span><span class="pl-topic">Logic synthesis</span><span class="pl-topic">Physical design</span><span class="pl-topic">Timing analysis</span><span class="pl-topic">Low power design</span><span class="pl-topic">DFT basics</span>
+        </div>
+        <div style="display:flex;gap:7px;flex-wrap:wrap;">
+          <a class="pl-link" href="https://nptel.ac.in/courses/117106093" target="_blank">▶ NPTEL course page</a>
+          <a class="pl-link pl-link-ghost" href="https://www.youtube.com/results?search_query=NPTEL+VLSI+Design+IIT+Madras" target="_blank">YouTube search</a>
+          <button class="watch-later-btn" onclick="savePlaylist(this,'nptel-vlsi','NPTEL IIT Madras — VLSI Design')">+ Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pl-card" data-stage="4" data-id="nptel-cmos">
+    <div class="pl-head">
+      <div class="pl-thumb" style="background:var(--coral-s);">⚗️</div>
+      <div class="pl-info">
+        <div class="pl-channel">NPTEL IIT Madras · YouTube</div>
+        <div class="pl-title">CMOS Analog IC Design — Full Course</div>
+        <div class="pl-desc">Covers MOSFET physics, CMOS inverter, logic gates at transistor level, static and dynamic logic families, memory cells, and interconnect. More circuit-focused than the VLSI Design course above. Recommended after completing Stage 1 and Stage 4 above.</div>
+        <div class="pl-meta">
+          <div class="pl-meta-item">📹 40 lectures</div>
+          <div class="pl-meta-item">⏱ ~25 hrs</div>
+          <div class="pl-meta-item">🔴 Advanced undergraduate</div>
+        </div>
+        <div class="pl-topics">
+          <span class="pl-topic">MOSFET physics</span><span class="pl-topic">CMOS inverter</span><span class="pl-topic">Logic families</span><span class="pl-topic">Noise margins</span><span class="pl-topic">Dynamic logic</span><span class="pl-topic">SRAM/DRAM cells</span><span class="pl-topic">Interconnect</span>
+        </div>
+        <div style="display:flex;gap:7px;flex-wrap:wrap;">
+          <a class="pl-link" href="https://nptel.ac.in/courses/117106030" target="_blank">▶ NPTEL course page</a>
+          <button class="watch-later-btn" onclick="savePlaylist(this,'nptel-cmos','NPTEL — CMOS Analog IC Design')">+ Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pl-card" data-stage="4" data-id="onur-mutlu">
+    <div class="pl-head">
+      <div class="pl-thumb" style="background:var(--accent-s);">🧬</div>
+      <div class="pl-info">
+        <div class="pl-channel">Onur Mutlu · ETH Zürich · YouTube</div>
+        <div class="pl-title">Digital Design and Computer Architecture — Full Course (ETH Zürich)</div>
+        <div class="pl-desc">Prof. Onur Mutlu's complete digital design and computer architecture course from ETH Zürich — one of the world's top technical universities. Excellent coverage of RTL design, datapath, control, microarchitecture, memory. All slides, homeworks, and exams freely available. More rigorous than most online courses.</div>
+        <div class="pl-meta">
+          <div class="pl-meta-item">📹 27 full lectures</div>
+          <div class="pl-meta-item">⏱ ~50 hrs with materials</div>
+          <div class="pl-meta-item">🔵→🔴 Intermediate–Advanced</div>
+        </div>
+        <div class="pl-topics">
+          <span class="pl-topic">RTL design</span><span class="pl-topic">Datapath</span><span class="pl-topic">Control logic</span><span class="pl-topic">Pipelining</span><span class="pl-topic">Memory hierarchy</span><span class="pl-topic">DRAM internals</span><span class="pl-topic">Microarchitecture</span>
+        </div>
+        <div style="display:flex;gap:7px;flex-wrap:wrap;">
+          <a class="pl-link" href="https://www.youtube.com/playlist?list=PL5Q2soXY2Zi9OhoVQBXYFIZywZXCPl4M_" target="_blank">▶ Watch playlist</a>
+          <a class="pl-link pl-link-ghost" href="https://safari.ethz.ch/digitaltechnik/spring2021/doku.php" target="_blank">Course materials</a>
+          <button class="watch-later-btn" onclick="savePlaylist(this,'onur-eth','Onur Mutlu — ETH Zürich DDCA')">+ Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ STAGE 5 ══════════ -->
+  <div class="pl-stage" data-stage="5">
+    <div class="pl-stage-num" style="background:var(--coral);">5</div>
+    <div>
+      <span class="pl-stage-label">Advanced — Verification, SoC, Open-Source VLSI</span>
+      <span class="pl-stage-sub">— For when you're ready to go beyond the BSc curriculum</span>
+    </div>
+  </div>
+
+  <div class="pl-card" data-stage="5" data-id="efabless">
+    <div class="pl-head">
+      <div class="pl-thumb" style="background:var(--emerald-s);">🔧</div>
+      <div class="pl-info">
+        <div class="pl-channel">Efabless · YouTube + OpenLane</div>
+        <div class="pl-title">Zero to ASIC — Open-Source Chip Design (OpenLane + Sky130)</div>
+        <div class="pl-desc">The open-source VLSI revolution. Learn to design an actual ASIC using the free SkyWater 130nm PDK and OpenLane toolchain. This is real chip design — synthesis, place and route, DRC, LVS — for free. Efabless has even run free chip fabrication programmes for students. Extraordinarily exciting for a BSc student.</div>
+        <div class="pl-meta">
+          <div class="pl-meta-item">📹 Multiple series</div>
+          <div class="pl-meta-item">🟢 Free tools</div>
+          <div class="pl-meta-item">🔴 Advanced</div>
+        </div>
+        <div class="pl-topics">
+          <span class="pl-topic">OpenLane flow</span><span class="pl-topic">Sky130 PDK</span><span class="pl-topic">RTL to GDSII</span><span class="pl-topic">Physical design</span><span class="pl-topic">DRC/LVS</span><span class="pl-topic">ASIC tapeout</span>
+        </div>
+        <div style="display:flex;gap:7px;flex-wrap:wrap;">
+          <a class="pl-link" href="https://www.youtube.com/@efabless/videos" target="_blank">▶ Efabless YouTube</a>
+          <a class="pl-link pl-link-ghost" href="https://github.com/The-OpenROAD-Project/OpenLane" target="_blank">OpenLane GitHub</a>
+          <button class="watch-later-btn" onclick="savePlaylist(this,'efabless','Efabless — Zero to ASIC')">+ Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pl-card" data-stage="5" data-id="verification-sv">
+    <div class="pl-head">
+      <div class="pl-thumb" style="background:var(--violet-s);">🧪</div>
+      <div class="pl-info">
+        <div class="pl-channel">Verification Academy · Free Portal</div>
+        <div class="pl-title">SystemVerilog for Verification — UVM Fundamentals</div>
+        <div class="pl-desc">Mentor Graphics' (now Siemens EDA) free learning portal for SystemVerilog and UVM verification. The industry standard methodology for chip verification. Good to explore after mastering basic Verilog — understanding verification is valuable for any VLSI engineer.</div>
+        <div class="pl-meta">
+          <div class="pl-meta-item">🎓 Free courses</div>
+          <div class="pl-meta-item">📄 Written + video</div>
+          <div class="pl-meta-item">🔴 Advanced</div>
+        </div>
+        <div class="pl-topics">
+          <span class="pl-topic">SystemVerilog classes</span><span class="pl-topic">Constrained random</span><span class="pl-topic">Functional coverage</span><span class="pl-topic">UVM basics</span><span class="pl-topic">Assertions (SVA)</span>
+        </div>
+        <div style="display:flex;gap:7px;flex-wrap:wrap;">
+          <a class="pl-link" href="https://verificationacademy.com" target="_blank">▶ Verification Academy</a>
+          <button class="watch-later-btn" onclick="savePlaylist(this,'verif-acad','Verification Academy — SV/UVM')">+ Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pl-card" data-stage="5" data-id="nand2tetris">
+    <div class="pl-head">
+      <div class="pl-thumb" style="background:var(--chip2); color:rgba(255,255,255,0.8);">⬡</div>
+      <div class="pl-info">
+        <div class="pl-channel">Nand2Tetris · Coursera / YouTube — Free audit</div>
+        <div class="pl-title">From NAND to Tetris — Build a Modern Computer from First Principles</div>
+        <div class="pl-desc">A complete course where you build an entire computer — from NAND gates through ALU, CPU, assembler, virtual machine, compiler, and operating system. Taught by Shimon Schocken & Noam Nisan (Hebrew University). One of the most celebrated CS/EE courses ever made. Free to audit on Coursera. Deeply reinforces everything in your VLSI course.</div>
+        <div class="pl-meta">
+          <div class="pl-meta-item">📹 2 parts, ~24 hrs</div>
+          <div class="pl-meta-item">🟢 Free to audit</div>
+          <div class="pl-meta-item">🔵 Intermediate</div>
+        </div>
+        <div class="pl-topics">
+          <span class="pl-topic">NAND gate</span><span class="pl-topic">Boolean logic</span><span class="pl-topic">ALU</span><span class="pl-topic">CPU architecture</span><span class="pl-topic">Assembly</span><span class="pl-topic">Compiler</span><span class="pl-topic">OS basics</span>
+        </div>
+        <div style="display:flex;gap:7px;flex-wrap:wrap;">
+          <a class="pl-link" href="https://www.nand2tetris.org/" target="_blank">▶ nand2tetris.org</a>
+          <a class="pl-link pl-link-ghost" href="https://www.coursera.org/learn/build-a-computer" target="_blank">Coursera (free audit)</a>
+          <button class="watch-later-btn" onclick="savePlaylist(this,'nand2tetris','Nand2Tetris — Build a Computer')">+ Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  </div><!-- end pl-list -->
+
+  <!-- Saved Watchlist -->
+  <div class="sec-h2" style="margin-top:20px;">⭐ My Saved Watchlist</div>
+  <div id="pl-saved-list">
+    <div class="card" style="text-align:center;padding:1.5rem;color:var(--ink3);">
+      <div style="font-size:0.85rem;">No playlists saved yet. Click <strong>+ Save</strong> on any playlist above.</div>
+    </div>
+  </div>
+
+</div><!-- end sec-playlists -->
+
+<!-- ═══════════ AUDIO PROJECT ═══════════ -->
+<div class="section" id="sec-project">
+<style>
+.proj-code {
+  background: var(--chip);
+  color: #C9D1D9;
+  border-radius: 8px;
+  padding: 14px 16px;
+  font-family: var(--mono);
+  font-size: 0.77rem;
+  line-height: 1.75;
+  overflow-x: auto;
+  margin: 10px 0;
+  position: relative;
+  white-space: pre;
+}
+.proj-code .kw  { color: #FF7B72; }
+.proj-code .mod { color: #79C0FF; }
+.proj-code .str { color: #A5D6FF; }
+.proj-code .num { color: #F2CC60; }
+.proj-code .cmt { color: #8B949E; font-style: italic; }
+.proj-code .sig { color: #D2A8FF; }
+.proj-code .op  { color: #FF7B72; }
+.proj-ccopy {
+  position: absolute; top: 8px; right: 8px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.7);
+  padding: 3px 10px;
+  border-radius: 5px;
+  font-size: 0.68rem;
+  cursor: pointer;
+  font-family: var(--sans);
+}
+.proj-ccopy:hover { background: rgba(255,255,255,0.14); }
+.proj-phase {
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+  margin: 10px 0 16px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.proj-ph {
+  flex: 1;
+  min-width: 80px;
+  padding: 10px 6px;
+  text-align: center;
+  font-size: 0.7rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: #fff;
+}
+.proj-module-nav {
+  display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px;
+}
+.proj-module-btn {
+  padding: 6px 14px;
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  background: var(--card);
+  color: var(--ink3);
+  font-family: var(--sans);
+  transition: all 0.12s;
+}
+.proj-module-btn:hover, .proj-module-btn.on { background: var(--accent); color: #fff; border-color: var(--accent); }
+.proj-module { display: none; }
+.proj-module.active { display: block; }
+.arch-flow {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  overflow-x: auto;
+  padding: 12px 0;
+  margin: 10px 0;
+}
+.arch-box {
+  flex-shrink: 0;
+  padding: 10px 12px;
+  border-radius: 8px;
+  text-align: center;
+  min-width: 90px;
+}
+.arch-arrow {
+  flex-shrink: 0;
+  color: var(--ink3);
+  font-size: 1.1rem;
+  padding: 0 4px;
+}
+.signal-badge {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  background: var(--chip);
+  color: #79C0FF;
+  padding: 2px 7px;
+  border-radius: 4px;
+  display: inline-block;
+  margin: 1px 2px;
+}
+.warn-box {
+  background: var(--amber-s);
+  border-left: 3px solid var(--amber);
+  border-radius: 0 6px 6px 0;
+  padding: 9px 12px;
+  font-size: 0.82rem;
+  color: #713a07;
+  margin: 8px 0;
+}
+.warn-box strong { color: #412402; }
+.tip-box {
+  background: var(--emerald-s);
+  border-left: 3px solid var(--emerald);
+  border-radius: 0 6px 6px 0;
+  padding: 9px 12px;
+  font-size: 0.82rem;
+  color: #065f46;
+  margin: 8px 0;
+}
+</style>
+
+  <div class="info-box ib-blue" style="margin-bottom:14px;">
+    <div class="info-label">About this project</div>
+    <p>A real-time digital audio equaliser on FPGA — the ideal BSc Level 4 VLSI project. You receive audio samples over I2S, apply FIR filters (bass/mid/treble) in hardware, and output processed audio. Covers FSMs, fixed-point arithmetic, pipelining, clock domains, and I/O interfaces — all in synthesisable Verilog.</p>
+  </div>
+
+  <!-- AI assistant for project -->
+  <div class="ai-box" style="margin-bottom:16px;">
+    <div class="ai-box-label">🤖 Project AI Assistant</div>
+    <div class="ai-box-title">Ask Claude about any part of this project</div>
+    <div class="ai-box-footer">
+      <button class="ai-btn" onclick="askAI('Explain clock domain crossing in VLSI audio design. How do I safely pass samples from the I2S audio clock domain into the 100 MHz system clock domain?')">Clock domain crossing</button>
+      <button class="ai-btn" onclick="askAI('How do I calculate FIR filter coefficients for a bass boost EQ band centred at 200 Hz with a 48 kHz sample rate? Give me the Python code and the resulting fixed-point coefficients.')">FIR coefficients</button>
+      <button class="ai-btn" onclick="askAI('What is fixed-point arithmetic in VLSI? Explain Q format notation and how to implement a signed 16-bit × 16-bit multiplier with 32-bit result in Verilog.')">Fixed-point arithmetic</button>
+      <button class="ai-btn" onclick="askAI('What FPGA resources does a 64-tap FIR filter use? How many LUTs, DSP48 blocks, and BRAMs would it consume on a Xilinx Artix-7?')">Resource usage</button>
+    </div>
+  </div>
+
+  <!-- Signal chain overview -->
+  <div class="sec-h2" style="margin-top:0;">System Architecture — Signal Chain</div>
+
+  <div class="card card-accent-blue">
+    <div class="card-body" style="margin-bottom:10px;">The complete audio equaliser is built from 5 hardware modules connected in a pipeline. Each stage produces output that feeds the next, all running concurrently on the FPGA.</div>
+    <div class="arch-flow">
+      <div class="arch-box" style="background:var(--teal-s);">
+        <div style="font-size:0.78rem;font-weight:600;color:var(--teal);">I2S RX</div>
+        <div style="font-size:0.68rem;color:var(--ink3);margin-top:3px;">Audio input</div>
+      </div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-box" style="background:var(--surface);">
+        <div style="font-size:0.78rem;font-weight:600;color:var(--ink2);">FIFO</div>
+        <div style="font-size:0.68rem;color:var(--ink3);margin-top:3px;">CDC buffer</div>
+      </div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-box" style="background:var(--violet-s);border:2px solid var(--violet);">
+        <div style="font-size:0.78rem;font-weight:600;color:var(--violet);">FIR × 3</div>
+        <div style="font-size:0.68rem;color:var(--violet);margin-top:3px;">Bass/Mid/Treble</div>
+      </div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-box" style="background:var(--amber-s);">
+        <div style="font-size:0.78rem;font-weight:600;color:var(--amber);">Gain</div>
+        <div style="font-size:0.68rem;color:var(--ink3);margin-top:3px;">Mix & scale</div>
+      </div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-box" style="background:var(--teal-s);">
+        <div style="font-size:0.78rem;font-weight:600;color:var(--teal);">I2S TX</div>
+        <div style="font-size:0.68rem;color:var(--ink3);margin-top:3px;">Audio output</div>
+      </div>
+    </div>
+    <table class="kv" style="margin-top:10px;">
+      <tr><td>FPGA board</td><td>Basys 3 (Xilinx Artix-7) or any Xilinx/Intel student board</td></tr>
+      <tr><td>Audio codec</td><td>Digilent Pmod I2S2 (~$15) or on-board codec if available</td></tr>
+      <tr><td>System clock</td><td>100 MHz (FPGA internal) for all arithmetic and control</td></tr>
+      <tr><td>Audio clock</td><td>12.288 MHz MCLK → 48 kHz sample rate (256× oversampling)</td></tr>
+      <tr><td>Audio resolution</td><td>24-bit stereo (I2S standard)</td></tr>
+      <tr><td>Filter</td><td>3-band EQ: bass (20–300 Hz), mid (300 Hz–3 kHz), treble (3–20 kHz)</td></tr>
+    </table>
+  </div>
+
+  <!-- Build phases -->
+  <div class="sec-h2">Build Plan — 4 Phases</div>
+  <div class="proj-phase">
+    <div class="proj-ph" style="background:#185FA5;">Phase 1<br>I2S loopback<br><span style="font-weight:400;opacity:0.8;">Week 1–2</span></div>
+    <div class="proj-ph" style="background:#0F6E56;">Phase 2<br>FIR filter<br><span style="font-weight:400;opacity:0.8;">Week 3–4</span></div>
+    <div class="proj-ph" style="background:#854F0B;">Phase 3<br>3-band EQ<br><span style="font-weight:400;opacity:0.8;">Week 5–6</span></div>
+    <div class="proj-ph" style="background:#534AB7;">Phase 4<br>Controls + demo<br><span style="font-weight:400;opacity:0.8;">Week 7–8</span></div>
+  </div>
+  <div class="grid-2" style="margin-bottom:16px;">
+    <div class="card card-accent-blue">
+      <div class="card-tag tag-blue">Phase 1 goal</div>
+      <div class="card-body">Pass audio through the FPGA untouched: microphone → I2S RX → FIFO → I2S TX → speaker. If you hear the input clearly through the output, your clocking, I2S timing, and CDC are all correct. Build everything else on top of a working loopback.</div>
+    </div>
+    <div class="card card-accent-teal">
+      <div class="card-tag tag-teal">Phase 2 goal</div>
+      <div class="card-body">Insert a single low-pass FIR filter in the signal path. Verify with simulation first — feed in a sine wave testbench, check the output spectrum. Then run on hardware. You should hear the treble frequencies cut.</div>
+    </div>
+    <div class="card card-accent-amber">
+      <div class="card-tag tag-amber">Phase 3 goal</div>
+      <div class="card-body">Run three FIR filters in parallel (bass, mid, treble), each with different coefficients. Sum the three outputs with independent gain multipliers. You now have a 3-band equaliser.</div>
+    </div>
+    <div class="card card-accent-violet">
+      <div class="card-tag tag-violet">Phase 4 goal</div>
+      <div class="card-body">Use the Basys 3 slide switches to control bass/mid/treble gain in real time. 3 switches per band = 8 gain levels each. Add 7-segment display showing active EQ preset. This is your demo.</div>
+    </div>
+  </div>
+
+  <!-- Module tabs -->
+  <div class="sec-h2">Verilog Source Code — All Modules</div>
+
+  <div class="proj-module-nav">
+    <button class="proj-module-btn on" onclick="showModule('i2s-rx',this)">Module 1 — I2S RX</button>
+    <button class="proj-module-btn" onclick="showModule('fir',this)">Module 2 — FIR Filter</button>
+    <button class="proj-module-btn" onclick="showModule('fir-bank',this)">Module 3 — Filter Bank</button>
+    <button class="proj-module-btn" onclick="showModule('gain',this)">Module 4 — Gain Stage</button>
+    <button class="proj-module-btn" onclick="showModule('i2s-tx',this)">Module 5 — I2S TX</button>
+    <button class="proj-module-btn" onclick="showModule('top',this)">Top Level</button>
+    <button class="proj-module-btn" onclick="showModule('testbench',this)">Testbench</button>
+    <button class="proj-module-btn" onclick="showModule('coeff',this)">Filter Coefficients</button>
+  </div>
+
+  <!-- MODULE 1: I2S RX -->
+  <div class="proj-module active" id="pm-i2s-rx">
+    <div class="card card-accent-teal">
+      <div class="card-tag tag-teal">Module 1 — i2s_rx.v</div>
+      <div class="card-title">I2S Receiver — deserialise serial audio into 24-bit parallel samples</div>
+      <div class="card-body">I2S uses 3 wires: BCLK (bit clock ~3 MHz), LRCLK (left/right at 48 kHz), and SDATA (serial data, MSB first). This module synchronises all three into the 100 MHz system clock domain, detects edges, and shifts bits into a 24-bit register. When LRCLK toggles, the completed sample is latched.</div>
+      <div class="warn-box" style="margin-top:10px;"><strong>Key concept:</strong> The 2-flop synchroniser on every input prevents metastability when crossing from the audio clock domain to the system clock domain. Never omit these — intermittent failures on hardware are almost always a missing synchroniser.</div>
+    </div>
+    <div class="proj-code" id="code-i2s-rx"><button class="proj-ccopy" onclick="projCopy(this,'code-i2s-rx')">Copy</button><span class="cmt">// ─────────────────────────────────────────────────────────────
+// Module  : i2s_rx
+// Purpose : Deserialise I2S audio stream → 24-bit parallel samples
+// Protocol: Standard I2S — MSB first, data valid on BCLK rising edge,
+//           one BCLK after LRCLK transition (Philips I2S spec)
+// Clocks  : clk = 100 MHz system; bclk/lrclk from audio domain
+// ─────────────────────────────────────────────────────────────</span>
+<span class="kw">module</span> <span class="mod">i2s_rx</span> (
+    <span class="kw">input  wire</span>        clk,           <span class="cmt">// 100 MHz system clock</span>
+    <span class="kw">input  wire</span>        rst_n,         <span class="cmt">// Active-low synchronous reset</span>
+    <span class="kw">input  wire</span>        bclk,          <span class="cmt">// I2S bit clock  ~3.072 MHz</span>
+    <span class="kw">input  wire</span>        lrclk,         <span class="cmt">// Left/Right select, 48 kHz</span>
+    <span class="kw">input  wire</span>        sdata,         <span class="cmt">// Serial audio data (MSB first)</span>
+    <span class="kw">output reg</span>  [<span class="num">23</span>:<span class="num">0</span>] left_sample,   <span class="cmt">// Left channel, valid when sample_valid=1</span>
+    <span class="kw">output reg</span>  [<span class="num">23</span>:<span class="num">0</span>] right_sample,  <span class="cmt">// Right channel</span>
+    <span class="kw">output reg</span>         sample_valid   <span class="cmt">// 1-cycle pulse: new stereo frame ready</span>
+);
+
+<span class="cmt">    // ── 2-flop synchronisers (clock domain crossing) ─────────</span>
+<span class="cmt">    // Audio signals come from MCLK domain. Capture→stabilise.</span>
+    <span class="kw">reg</span> bclk_r1,  bclk_r2;
+    <span class="kw">reg</span> lrclk_r1, lrclk_r2;
+    <span class="kw">reg</span> sdata_r1, sdata_r2;
+
+    <span class="kw">always</span> @(<span class="kw">posedge</span> clk) <span class="kw">begin</span>
+        <span class="kw">if</span> (!rst_n) <span class="kw">begin</span>
+            {bclk_r1,bclk_r2,lrclk_r1,lrclk_r2,sdata_r1,sdata_r2} &lt;= <span class="num">6'd0</span>;
+        <span class="kw">end else begin</span>
+            bclk_r1  &lt;= bclk;   bclk_r2  &lt;= bclk_r1;
+            lrclk_r1 &lt;= lrclk; lrclk_r2 &lt;= lrclk_r1;
+            sdata_r1 &lt;= sdata; sdata_r2 &lt;= sdata_r1;
+        <span class="kw">end</span>
+    <span class="kw">end</span>
+
+<span class="cmt">    // ── Edge detection (previous-value comparison) ───────────</span>
+    <span class="kw">reg</span> bclk_prev, lrclk_prev;
+    <span class="kw">wire</span> bclk_rise  =  bclk_r2  &amp; ~bclk_prev;
+    <span class="kw">wire</span> lrclk_rise =  lrclk_r2 &amp; ~lrclk_prev;
+    <span class="kw">wire</span> lrclk_fall = ~lrclk_r2 &amp;  lrclk_prev;
+
+    <span class="kw">always</span> @(<span class="kw">posedge</span> clk)
+        {bclk_prev, lrclk_prev} &lt;= {bclk_r2, lrclk_r2};
+
+<span class="cmt">    // ── Shift register and channel tracking ──────────────────</span>
+    <span class="kw">reg</span> [<span class="num">23</span>:<span class="num">0</span>] shift_reg;    <span class="cmt">// Accumulates bits MSB-first</span>
+    <span class="kw">reg</span> [<span class="num">4</span>:<span class="num">0</span>]  bit_cnt;      <span class="cmt">// 0..23</span>
+    <span class="kw">reg</span>        channel;      <span class="cmt">// 0=LEFT  1=RIGHT</span>
+
+    <span class="kw">always</span> @(<span class="kw">posedge</span> clk) <span class="kw">begin</span>
+        <span class="kw">if</span> (!rst_n) <span class="kw">begin</span>
+            shift_reg &lt;= <span class="num">0</span>; bit_cnt &lt;= <span class="num">0</span>; channel &lt;= <span class="num">0</span>;
+            left_sample &lt;= <span class="num">0</span>; right_sample &lt;= <span class="num">0</span>; sample_valid &lt;= <span class="num">0</span>;
+        <span class="kw">end else begin</span>
+            sample_valid &lt;= <span class="num">1'b0</span>;    <span class="cmt">// default: pulse de-asserted</span>
+
+            <span class="kw">if</span> (lrclk_rise || lrclk_fall) <span class="kw">begin</span>
+<span class="cmt">                // LRCLK edge = end of one channel's 24 bits</span>
+                <span class="kw">if</span> (channel == <span class="num">1'b0</span>)
+                    left_sample  &lt;= shift_reg;
+                <span class="kw">else begin</span>
+                    right_sample &lt;= shift_reg;
+                    sample_valid &lt;= <span class="num">1'b1</span>;   <span class="cmt">// Both channels latched → valid frame</span>
+                <span class="kw">end</span>
+                channel   &lt;= ~channel;
+                bit_cnt   &lt;= <span class="num">5'd0</span>;
+                shift_reg &lt;= <span class="num">24'd0</span>;
+
+            <span class="kw">end else if</span> (bclk_rise &amp;&amp; bit_cnt &lt; <span class="num">5'd24</span>) <span class="kw">begin</span>
+<span class="cmt">                // BCLK rising edge: shift in next bit (MSB first)</span>
+                shift_reg &lt;= {shift_reg[<span class="num">22</span>:<span class="num">0</span>], sdata_r2};
+                bit_cnt   &lt;= bit_cnt + <span class="num">5'd1</span>;
+            <span class="kw">end</span>
+        <span class="kw">end</span>
+    <span class="kw">end</span>
+<span class="kw">endmodule</span></div>
+  </div>
+
+  <!-- MODULE 2: FIR -->
+  <div class="proj-module" id="pm-fir">
+    <div class="card card-accent-violet">
+      <div class="card-tag tag-violet">Module 2 — fir_filter.v</div>
+      <div class="card-title">FIR Filter — direct-form implementation with fixed-point arithmetic</div>
+      <div class="card-body">A Finite Impulse Response filter computes y[n] = Σ h[k] · x[n−k]. In hardware this is a delay line (shift register of past samples), N multipliers (sample × coefficient), and an adder tree. Coefficients are pre-computed in Python (see the Coefficients tab) and stored as constants. Uses Q1.15 fixed-point: 1 sign bit + 15 fractional bits.</div>
+      <div class="tip-box" style="margin-top:10px;"><strong>Why fixed-point?</strong> FPGAs have no native floating-point hardware. Fixed-point arithmetic uses integer multipliers (DSP48 blocks) which are fast, small, and synthesisable. Q1.15 gives you a range of −1.0 to +0.99997 with 0.00003 resolution — more than enough for audio filter coefficients.</div>
+    </div>
+    <div class="proj-code" id="code-fir"><button class="proj-ccopy" onclick="projCopy(this,'code-fir')">Copy</button><span class="cmt">// ─────────────────────────────────────────────────────────────
+// Module  : fir_filter
+// Purpose : N-tap FIR filter, direct-form, fixed-point Q1.15
+// Format  : Input/output = signed 24-bit audio sample
+//           Coefficients = signed 16-bit Q1.15 (range −1.0 to +1.0)
+// Latency : N+1 clock cycles (pipeline delay — constant, not a problem)
+// ─────────────────────────────────────────────────────────────</span>
+<span class="kw">module</span> <span class="mod">fir_filter</span> #(
+    <span class="kw">parameter</span> <span class="num">N_TAPS</span> = <span class="num">32</span>         <span class="cmt">// Number of filter taps (order = N-1)</span>
+) (
+    <span class="kw">input  wire</span>        clk,
+    <span class="kw">input  wire</span>        rst_n,
+    <span class="kw">input  wire</span>        sample_valid, <span class="cmt">// 1-cycle pulse: new sample on data_in</span>
+    <span class="kw">input  wire</span> signed [<span class="num">23</span>:<span class="num">0</span>] data_in,
+    <span class="kw">output reg</span>  signed [<span class="num">23</span>:<span class="num">0</span>] data_out,
+    <span class="kw">output reg</span>         out_valid     <span class="cmt">// Pulses when data_out is valid</span>
+);
+
+<span class="cmt">    // ── Coefficient ROM (set from parameter or localparams below) ─</span>
+<span class="cmt">    // Replace these 32 values with your computed coefficients.</span>
+<span class="cmt">    // These are a generic low-pass example (cutoff ~4 kHz @ 48kHz SR)</span>
+    <span class="kw">localparam signed</span> [<span class="num">15</span>:<span class="num">0</span>] COEFF [<span class="num">0</span>:<span class="num">31</span>] = '{
+        <span class="num">16'sh0012</span>, <span class="num">16'sh0028</span>, <span class="num">16'sh0057</span>, <span class="num">16'sh009F</span>,
+        <span class="num">16'sh0101</span>, <span class="num">16'sh0177</span>, <span class="num">16'sh01F9</span>, <span class="num">16'sh027A</span>,
+        <span class="num">16'sh02ED</span>, <span class="num">16'sh0342</span>, <span class="num">16'sh036E</span>, <span class="num">16'sh0368</span>,
+        <span class="num">16'sh0328</span>, <span class="num">16'sh02A9</span>, <span class="num">16'sh01FB</span>, <span class="num">16'sh0130</span>,
+        <span class="num">16'sh0130</span>, <span class="num">16'sh01FB</span>, <span class="num">16'sh02A9</span>, <span class="num">16'sh0328</span>,
+        <span class="num">16'sh0368</span>, <span class="num">16'sh036E</span>, <span class="num">16'sh0342</span>, <span class="num">16'sh02ED</span>,
+        <span class="num">16'sh027A</span>, <span class="num">16'sh01F9</span>, <span class="num">16'sh0177</span>, <span class="num">16'sh0101</span>,
+        <span class="num">16'sh009F</span>, <span class="num">16'sh0057</span>, <span class="num">16'sh0028</span>, <span class="num">16'sh0012</span>
+    };
+
+<span class="cmt">    // ── Delay line (shift register of past N samples) ─────────</span>
+    <span class="kw">reg signed</span> [<span class="num">23</span>:<span class="num">0</span>] delay_line [<span class="num">0</span>:<span class="num">N_TAPS</span>-<span class="num">1</span>];
+    <span class="kw">integer</span> i;
+
+    <span class="kw">always</span> @(<span class="kw">posedge</span> clk) <span class="kw">begin</span>
+        <span class="kw">if</span> (!rst_n) <span class="kw">begin</span>
+            <span class="kw">for</span> (i=<span class="num">0</span>; i&lt;N_TAPS; i=i+<span class="num">1</span>) delay_line[i] &lt;= <span class="num">24'd0</span>;
+        <span class="kw">end else if</span> (sample_valid) <span class="kw">begin</span>
+<span class="cmt">            // Shift all samples one position older</span>
+            <span class="kw">for</span> (i=N_TAPS-<span class="num">1</span>; i&gt;<span class="num">0</span>; i=i-<span class="num">1</span>)
+                delay_line[i] &lt;= delay_line[i-<span class="num">1</span>];
+            delay_line[<span class="num">0</span>] &lt;= data_in;    <span class="cmt">// Newest sample at index 0</span>
+        <span class="kw">end</span>
+    <span class="kw">end</span>
+
+<span class="cmt">    // ── Multiply-Accumulate (MAC) ─────────────────────────────</span>
+<span class="cmt">    // Each sample × its coefficient = 24-bit × 16-bit = 40-bit product</span>
+<span class="cmt">    // Accumulate N products → sum is 40+log2(N) bits wide</span>
+    <span class="kw">reg signed</span> [<span class="num">47</span>:<span class="num">0</span>] acc;          <span class="cmt">// Accumulator (wide enough to prevent overflow)</span>
+    <span class="kw">reg</span> [<span class="num">1</span>:<span class="num">0</span>] valid_delay;            <span class="cmt">// Pipeline delay to track output valid</span>
+
+    <span class="kw">always</span> @(<span class="kw">posedge</span> clk) <span class="kw">begin</span>
+        <span class="kw">if</span> (!rst_n) <span class="kw">begin</span>
+            acc &lt;= <span class="num">48'd0</span>; data_out &lt;= <span class="num">24'd0</span>;
+            out_valid &lt;= <span class="num">0</span>; valid_delay &lt;= <span class="num">0</span>;
+        <span class="kw">end else begin</span>
+            valid_delay &lt;= {valid_delay[<span class="num">0</span>], sample_valid};
+            out_valid   &lt;= valid_delay[<span class="num">1</span>];
+
+            <span class="kw">if</span> (sample_valid) <span class="kw">begin</span>
+                acc &lt;= <span class="num">48'sd0</span>;
+                <span class="kw">for</span> (i=<span class="num">0</span>; i&lt;N_TAPS; i=i+<span class="num">1</span>)
+<span class="cmt">                    // Signed multiply: extend both operands then multiply</span>
+                    acc &lt;= acc + ({{<span class="num">8</span>{delay_line[i][<span class="num">23</span>]}}, delay_line[i]}
+                                * {{<span class="num">32</span>{COEFF[i][<span class="num">15</span>]}}, COEFF[i]});
+            <span class="kw">end</span>
+
+<span class="cmt">            // Truncate back to 24 bits: drop sign extension + fractional bits</span>
+<span class="cmt">            // Q1.15 × Q8.16 → result is in bits [38:15] of the accumulator</span>
+            <span class="kw">if</span> (valid_delay[<span class="num">0</span>])
+                data_out &lt;= acc[<span class="num">38</span>:<span class="num">15</span>];
+        <span class="kw">end</span>
+    <span class="kw">end</span>
+<span class="kw">endmodule</span></div>
+  </div>
+
+  <!-- MODULE 3: FILTER BANK -->
+  <div class="proj-module" id="pm-fir-bank">
+    <div class="card card-accent-violet">
+      <div class="card-tag tag-violet">Module 3 — eq_filter_bank.v</div>
+      <div class="card-title">3-Band Filter Bank — instantiates 3 parallel FIR filters</div>
+      <div class="card-body">This module instantiates three copies of the FIR filter module, each with different coefficients for bass (low-pass), mid (band-pass), and treble (high-pass). All three receive the same input sample simultaneously and produce independent filtered outputs.</div>
+    </div>
+    <div class="proj-code" id="code-fir-bank"><button class="proj-ccopy" onclick="projCopy(this,'code-fir-bank')">Copy</button><span class="cmt">// ─────────────────────────────────────────────────────────────
+// Module  : eq_filter_bank
+// Purpose : 3-band equaliser — bass / mid / treble in parallel
+// Each band uses a separate FIR with different coefficients loaded
+// via the COEFF_FILE parameter (or hardcoded localparam arrays)
+// ─────────────────────────────────────────────────────────────</span>
+<span class="kw">module</span> <span class="mod">eq_filter_bank</span> (
+    <span class="kw">input  wire</span>        clk,
+    <span class="kw">input  wire</span>        rst_n,
+    <span class="kw">input  wire</span>        sample_valid,
+    <span class="kw">input  wire</span> signed [<span class="num">23</span>:<span class="num">0</span>] audio_in,
+
+    <span class="kw">output wire</span> signed [<span class="num">23</span>:<span class="num">0</span>] bass_out,
+    <span class="kw">output wire</span> signed [<span class="num">23</span>:<span class="num">0</span>] mid_out,
+    <span class="kw">output wire</span> signed [<span class="num">23</span>:<span class="num">0</span>] treble_out,
+    <span class="kw">output wire</span>        out_valid    <span class="cmt">// All three share the same latency</span>
+);
+
+<span class="cmt">    // Bass band: low-pass FIR, cutoff ~300 Hz</span>
+    <span class="mod">fir_filter</span> #(.N_TAPS(<span class="num">32</span>)) bass_fir (
+        .clk(clk), .rst_n(rst_n),
+        .sample_valid(sample_valid),
+        .data_in(audio_in),
+        .data_out(bass_out),
+        .out_valid(out_valid)   <span class="cmt">// Only need one — they're all identical</span>
+    );
+
+<span class="cmt">    // Mid band: band-pass FIR, passband 300 Hz – 3 kHz</span>
+<span class="cmt">    // Note: use different COEFF values inside fir_filter for mid/treble</span>
+<span class="cmt">    // Easiest: create fir_filter_mid.v and fir_filter_treble.v with</span>
+<span class="cmt">    //          different hardcoded localparam COEFF arrays</span>
+    <span class="mod">fir_filter</span> #(.N_TAPS(<span class="num">32</span>)) mid_fir (
+        .clk(clk), .rst_n(rst_n),
+        .sample_valid(sample_valid),
+        .data_in(audio_in),
+        .data_out(mid_out),
+        .out_valid()            <span class="cmt">// Unused — tied to bass_fir</span>
+    );
+
+<span class="cmt">    // Treble band: high-pass FIR, cutoff ~3 kHz</span>
+    <span class="mod">fir_filter</span> #(.N_TAPS(<span class="num">32</span>)) treble_fir (
+        .clk(clk), .rst_n(rst_n),
+        .sample_valid(sample_valid),
+        .data_in(audio_in),
+        .data_out(treble_out),
+        .out_valid()
+    );
+
+<span class="kw">endmodule</span></div>
+  </div>
+
+  <!-- MODULE 4: GAIN -->
+  <div class="proj-module" id="pm-gain">
+    <div class="card card-accent-amber">
+      <div class="card-tag tag-amber">Module 4 — gain_mixer.v</div>
+      <div class="card-title">Gain Stage & Mixer — multiply each band by a gain factor, sum outputs</div>
+      <div class="card-body">Takes the three band outputs and multiplies each by a user-controlled gain value (from switches), then sums them. Uses the same Q1.15 fixed-point arithmetic as the filter. The gain values come from the 3 slide switches on the Basys 3 — 3 switches per band gives 8 gain levels (0% to 200%).</div>
+    </div>
+    <div class="proj-code" id="code-gain"><button class="proj-ccopy" onclick="projCopy(this,'code-gain')">Copy</button><span class="cmt">// ─────────────────────────────────────────────────────────────
+// Module  : gain_mixer
+// Purpose : Scale each EQ band by gain, sum to one stereo output
+// Gain    : 3-bit input per band → 8 levels (0.0 to 2.0 step 0.286)
+// ─────────────────────────────────────────────────────────────</span>
+<span class="kw">module</span> <span class="mod">gain_mixer</span> (
+    <span class="kw">input  wire</span>        clk,
+    <span class="kw">input  wire</span>        rst_n,
+    <span class="kw">input  wire</span>        in_valid,
+
+    <span class="kw">input  wire</span> signed [<span class="num">23</span>:<span class="num">0</span>] bass_in,
+    <span class="kw">input  wire</span> signed [<span class="num">23</span>:<span class="num">0</span>] mid_in,
+    <span class="kw">input  wire</span> signed [<span class="num">23</span>:<span class="num">0</span>] treble_in,
+
+    <span class="kw">input  wire</span> [<span class="num">2</span>:<span class="num">0</span>] bass_gain,    <span class="cmt">// From slide switches SW[2:0]</span>
+    <span class="kw">input  wire</span> [<span class="num">2</span>:<span class="num">0</span>] mid_gain,     <span class="cmt">// From SW[5:3]</span>
+    <span class="kw">input  wire</span> [<span class="num">2</span>:<span class="num">0</span>] treble_gain,  <span class="cmt">// From SW[8:6]</span>
+
+    <span class="kw">output reg</span>  signed [<span class="num">23</span>:<span class="num">0</span>] audio_out,
+    <span class="kw">output reg</span>         out_valid
+);
+
+<span class="cmt">    // Gain LUT: 3-bit → Q1.15 fixed-point multiplier</span>
+<span class="cmt">    // 0=mute, 1=25%, 2=50%, 3=75%, 4=100%, 5=125%, 6=150%, 7=200%</span>
+    <span class="kw">function</span> signed [<span class="num">15</span>:<span class="num">0</span>] gain_lut;
+        <span class="kw">input</span> [<span class="num">2</span>:<span class="num">0</span>] sel;
+        <span class="kw">case</span> (sel)
+            <span class="num">3'd0</span>: gain_lut = <span class="num">16'sh0000</span>;  <span class="cmt">// 0.00 — mute</span>
+            <span class="num">3'd1</span>: gain_lut = <span class="num">16'sh2000</span>;  <span class="cmt">// 0.25</span>
+            <span class="num">3'd2</span>: gain_lut = <span class="num">16'sh4000</span>;  <span class="cmt">// 0.50</span>
+            <span class="num">3'd3</span>: gain_lut = <span class="num">16'sh6000</span>;  <span class="cmt">// 0.75</span>
+            <span class="num">3'd4</span>: gain_lut = <span class="num">16'sh7FFF</span>;  <span class="cmt">// 1.00 — unity gain</span>
+            <span class="num">3'd5</span>: gain_lut = <span class="num">16'shA000</span>;  <span class="cmt">// 1.25</span>
+            <span class="num">3'd6</span>: gain_lut = <span class="num">16'shC000</span>;  <span class="cmt">// 1.50</span>
+            <span class="num">3'd7</span>: gain_lut = <span class="num">16'shFFFF</span>;  <span class="cmt">// 2.00 — max boost</span>
+        <span class="kw">endcase</span>
+    <span class="kw">endfunction</span>
+
+    <span class="kw">reg signed</span> [<span class="num">47</span>:<span class="num">0</span>] bass_scaled, mid_scaled, treble_scaled;
+    <span class="kw">reg signed</span> [<span class="num">47</span>:<span class="num">0</span>] mix_sum;
+
+    <span class="kw">always</span> @(<span class="kw">posedge</span> clk) <span class="kw">begin</span>
+        <span class="kw">if</span> (!rst_n) <span class="kw">begin</span>
+            audio_out &lt;= <span class="num">24'd0</span>; out_valid &lt;= <span class="num">0</span>;
+        <span class="kw">end else begin</span>
+            out_valid &lt;= in_valid;
+
+            <span class="kw">if</span> (in_valid) <span class="kw">begin</span>
+<span class="cmt">                // Multiply each band by its Q1.15 gain factor</span>
+                bass_scaled   &lt;= $<span class="sig">signed</span>(bass_in)   * $<span class="sig">signed</span>(gain_lut(bass_gain));
+                mid_scaled    &lt;= $<span class="sig">signed</span>(mid_in)    * $<span class="sig">signed</span>(gain_lut(mid_gain));
+                treble_scaled &lt;= $<span class="sig">signed</span>(treble_in) * $<span class="sig">signed</span>(gain_lut(treble_gain));
+
+<span class="cmt">                // Sum all three bands</span>
+                mix_sum &lt;= bass_scaled + mid_scaled + treble_scaled;
+
+<span class="cmt">                // Truncate to 24-bit audio (bits [38:15] after Q1.15 multiply)</span>
+                audio_out &lt;= mix_sum[<span class="num">38</span>:<span class="num">15</span>];
+            <span class="kw">end</span>
+        <span class="kw">end</span>
+    <span class="kw">end</span>
+<span class="kw">endmodule</span></div>
+  </div>
+
+  <!-- MODULE 5: I2S TX -->
+  <div class="proj-module" id="pm-i2s-tx">
+    <div class="card card-accent-teal">
+      <div class="card-tag tag-teal">Module 5 — i2s_tx.v</div>
+      <div class="card-title">I2S Transmitter — serialise 24-bit samples back to I2S output</div>
+      <div class="card-body">The mirror of i2s_rx. Loads the processed 24-bit sample into a shift register and clocks it out MSB-first on SDATA, one bit per BCLK cycle, with LRCLK indicating left or right channel.</div>
+    </div>
+    <div class="proj-code" id="code-i2s-tx"><button class="proj-ccopy" onclick="projCopy(this,'code-i2s-tx')">Copy</button><span class="cmt">// ─────────────────────────────────────────────────────────────
+// Module  : i2s_tx
+// Purpose : Serialise 24-bit parallel samples → I2S output stream
+// Note    : bclk and lrclk are OUTPUTS here (TX generates the clocks)
+//           OR pass them from RX module for synchronous loopback
+// ─────────────────────────────────────────────────────────────</span>
+<span class="kw">module</span> <span class="mod">i2s_tx</span> (
+    <span class="kw">input  wire</span>        clk,
+    <span class="kw">input  wire</span>        rst_n,
+    <span class="kw">input  wire</span>        bclk,          <span class="cmt">// Shared with RX (same codec)</span>
+    <span class="kw">input  wire</span>        lrclk,
+    <span class="kw">input  wire</span> signed [<span class="num">23</span>:<span class="num">0</span>] left_in,
+    <span class="kw">input  wire</span> signed [<span class="num">23</span>:<span class="num">0</span>] right_in,
+    <span class="kw">input  wire</span>        load,          <span class="cmt">// Pulse: latch new sample into shift reg</span>
+    <span class="kw">output reg</span>         sdata          <span class="cmt">// Serial output to codec</span>
+);
+
+    <span class="kw">reg</span> bclk_r1, bclk_r2, bclk_prev;
+    <span class="kw">reg</span> lrclk_r1, lrclk_r2, lrclk_prev;
+    <span class="kw">wire</span> bclk_fall   = ~bclk_r2  &amp;  bclk_prev;   <span class="cmt">// Drive SDATA on FALLING edge</span>
+    <span class="kw">wire</span> lrclk_rise  =  lrclk_r2 &amp; ~lrclk_prev;
+    <span class="kw">wire</span> lrclk_fall  = ~lrclk_r2 &amp;  lrclk_prev;
+
+    <span class="kw">always</span> @(<span class="kw">posedge</span> clk) <span class="kw">begin</span>
+        bclk_r1  &lt;= bclk;   bclk_r2  &lt;= bclk_r1;   bclk_prev  &lt;= bclk_r2;
+        lrclk_r1 &lt;= lrclk; lrclk_r2 &lt;= lrclk_r1; lrclk_prev &lt;= lrclk_r2;
+    <span class="kw">end</span>
+
+    <span class="kw">reg</span> [<span class="num">23</span>:<span class="num">0</span>] shift_reg;
+    <span class="kw">reg</span> [<span class="num">4</span>:<span class="num">0</span>]  bit_cnt;
+    <span class="kw">reg</span>        channel;
+
+    <span class="kw">always</span> @(<span class="kw">posedge</span> clk) <span class="kw">begin</span>
+        <span class="kw">if</span> (!rst_n) <span class="kw">begin</span>
+            sdata &lt;= <span class="num">0</span>; shift_reg &lt;= <span class="num">0</span>; bit_cnt &lt;= <span class="num">0</span>; channel &lt;= <span class="num">0</span>;
+        <span class="kw">end else begin</span>
+
+            <span class="kw">if</span> (lrclk_rise || lrclk_fall) <span class="kw">begin</span>
+<span class="cmt">                // Load next channel's sample into shift register</span>
+                shift_reg &lt;= (lrclk_rise) ? left_in : right_in;
+                bit_cnt   &lt;= <span class="num">5'd0</span>;
+                channel   &lt;= ~channel;
+            <span class="kw">end</span>
+
+            <span class="kw">else if</span> (bclk_fall) <span class="kw">begin</span>
+<span class="cmt">                // Output MSB first on falling edge of BCLK</span>
+                sdata     &lt;= shift_reg[<span class="num">23</span>];
+                shift_reg &lt;= {shift_reg[<span class="num">22</span>:<span class="num">0</span>], <span class="num">1'b0</span>};
+                bit_cnt   &lt;= bit_cnt + <span class="num">1</span>;
+            <span class="kw">end</span>
+        <span class="kw">end</span>
+    <span class="kw">end</span>
+<span class="kw">endmodule</span></div>
+  </div>
+
+  <!-- TOP LEVEL -->
+  <div class="proj-module" id="pm-top">
+    <div class="card card-accent-blue">
+      <div class="card-tag tag-blue">Top Level — audio_eq_top.v</div>
+      <div class="card-title">Top-level module — wires all modules together and connects to FPGA pins</div>
+      <div class="card-body">This is the module you constrain in your XDC file and synthesise. It instantiates all 5 sub-modules, connects the signals between them, and maps ports to physical FPGA pins (switches, LEDs, Pmod connectors).</div>
+    </div>
+    <div class="proj-code" id="code-top"><button class="proj-ccopy" onclick="projCopy(this,'code-top')">Copy</button><span class="cmt">// ─────────────────────────────────────────────────────────────
+// Module  : audio_eq_top
+// Purpose : Top-level: wire all sub-modules, connect to FPGA pins
+// Board   : Basys 3 (Artix-7) + Digilent Pmod I2S2
+// ─────────────────────────────────────────────────────────────</span>
+<span class="kw">module</span> <span class="mod">audio_eq_top</span> (
+    <span class="kw">input  wire</span>        clk_100mhz,    <span class="cmt">// Basys 3 onboard 100 MHz oscillator</span>
+    <span class="kw">input  wire</span>        btnC,          <span class="cmt">// Centre button = reset</span>
+    <span class="kw">input  wire</span> [<span class="num">8</span>:<span class="num">0</span>]  sw,            <span class="cmt">// SW[2:0]=bass SW[5:3]=mid SW[8:6]=treble</span>
+
+    <span class="cmt">// Pmod I2S2 connector (JA port on Basys 3)</span>
+    <span class="kw">input  wire</span>        i2s_bclk,
+    <span class="kw">input  wire</span>        i2s_lrclk,
+    <span class="kw">input  wire</span>        i2s_sdata_in,  <span class="cmt">// From ADC (microphone)</span>
+    <span class="kw">output wire</span>        i2s_sdata_out, <span class="cmt">// To DAC (speaker/headphone)</span>
+    <span class="kw">output wire</span>        i2s_mclk,      <span class="cmt">// Master clock to codec (12.288 MHz)</span>
+
+    <span class="kw">output wire</span> [<span class="num">3</span>:<span class="num">0</span>]  led            <span class="cmt">// Activity LEDs</span>
+);
+
+    <span class="kw">wire</span> rst_n = ~btnC;
+
+<span class="cmt">    // ── Generate 12.288 MHz MCLK from 100 MHz using MMCM ──────</span>
+<span class="cmt">    // In Vivado: use Clocking Wizard IP, set output to 12.288 MHz</span>
+<span class="cmt">    // For simulation / quick test: use a simple clock divider</span>
+    clk_wiz_0 mclk_gen (
+        .clk_in1(clk_100mhz),
+        .clk_out1(i2s_mclk),
+        .locked()
+    );
+
+<span class="cmt">    // ── Internal wires ─────────────────────────────────────────</span>
+    <span class="kw">wire</span> signed [<span class="num">23</span>:<span class="num">0</span>] left_rx,  right_rx;
+    <span class="kw">wire</span>               rx_valid;
+    <span class="kw">wire</span> signed [<span class="num">23</span>:<span class="num">0</span>] bass_l,  mid_l,  treble_l;
+    <span class="kw">wire</span> signed [<span class="num">23</span>:<span class="num">0</span>] bass_r,  mid_r,  treble_r;
+    <span class="kw">wire</span>               fir_valid;
+    <span class="kw">wire</span> signed [<span class="num">23</span>:<span class="num">0</span>] mixed_l, mixed_r;
+    <span class="kw">wire</span>               mix_valid;
+
+<span class="cmt">    // ── I2S Receiver ───────────────────────────────────────────</span>
+    <span class="mod">i2s_rx</span> rx (
+        .clk(clk_100mhz), .rst_n(rst_n),
+        .bclk(i2s_bclk), .lrclk(i2s_lrclk), .sdata(i2s_sdata_in),
+        .left_sample(left_rx), .right_sample(right_rx),
+        .sample_valid(rx_valid)
+    );
+
+<span class="cmt">    // ── FIR Filter Bank — LEFT channel ─────────────────────────</span>
+    <span class="mod">eq_filter_bank</span> fir_left (
+        .clk(clk_100mhz), .rst_n(rst_n),
+        .sample_valid(rx_valid), .audio_in(left_rx),
+        .bass_out(bass_l), .mid_out(mid_l), .treble_out(treble_l),
+        .out_valid(fir_valid)
+    );
+
+<span class="cmt">    // ── FIR Filter Bank — RIGHT channel ────────────────────────</span>
+    <span class="mod">eq_filter_bank</span> fir_right (
+        .clk(clk_100mhz), .rst_n(rst_n),
+        .sample_valid(rx_valid), .audio_in(right_rx),
+        .bass_out(bass_r), .mid_out(mid_r), .treble_out(treble_r),
+        .out_valid()
+    );
+
+<span class="cmt">    // ── Gain Mixer — LEFT channel ──────────────────────────────</span>
+    <span class="mod">gain_mixer</span> mix_left (
+        .clk(clk_100mhz), .rst_n(rst_n), .in_valid(fir_valid),
+        .bass_in(bass_l), .mid_in(mid_l), .treble_in(treble_l),
+        .bass_gain(sw[<span class="num">2</span>:<span class="num">0</span>]), .mid_gain(sw[<span class="num">5</span>:<span class="num">3</span>]), .treble_gain(sw[<span class="num">8</span>:<span class="num">6</span>]),
+        .audio_out(mixed_l), .out_valid(mix_valid)
+    );
+
+<span class="cmt">    // ── Gain Mixer — RIGHT channel ─────────────────────────────</span>
+    <span class="mod">gain_mixer</span> mix_right (
+        .clk(clk_100mhz), .rst_n(rst_n), .in_valid(fir_valid),
+        .bass_in(bass_r), .mid_in(mid_r), .treble_in(treble_r),
+        .bass_gain(sw[<span class="num">2</span>:<span class="num">0</span>]), .mid_gain(sw[<span class="num">5</span>:<span class="num">3</span>]), .treble_gain(sw[<span class="num">8</span>:<span class="num">6</span>]),
+        .audio_out(mixed_r), .out_valid()
+    );
+
+<span class="cmt">    // ── I2S Transmitter ────────────────────────────────────────</span>
+    <span class="mod">i2s_tx</span> tx (
+        .clk(clk_100mhz), .rst_n(rst_n),
+        .bclk(i2s_bclk), .lrclk(i2s_lrclk),
+        .left_in(mixed_l), .right_in(mixed_r),
+        .load(mix_valid),
+        .sdata(i2s_sdata_out)
+    );
+
+    <span class="kw">assign</span> led = {mix_valid, rx_valid, i2s_bclk, i2s_lrclk};
+
+<span class="kw">endmodule</span></div>
+  </div>
+
+  <!-- TESTBENCH -->
+  <div class="proj-module" id="pm-testbench">
+    <div class="card card-accent-emerald">
+      <div class="card-tag tag-emerald">Testbench — tb_audio_eq.v</div>
+      <div class="card-title">System testbench — feed a sine wave in, verify filtered output</div>
+      <div class="card-body">This testbench generates a synthetic I2S stream containing a 1 kHz sine wave, drives it into the full system, and dumps the waveform to a VCD file for inspection in GTKWave. Verify that the output spectrum changes as expected when you toggle the filter band.</div>
+    </div>
+    <div class="proj-code" id="code-tb"><button class="proj-ccopy" onclick="projCopy(this,'code-tb')">Copy</button><span class="cmt">// Testbench: drives synthetic I2S with 1kHz sine, verifies output</span>
+<span class="kw">module</span> <span class="mod">tb_audio_eq</span>;
+    <span class="kw">reg</span>  clk_100mhz, rst_n;
+    <span class="kw">reg</span>  bclk, lrclk, sdata_in;
+    <span class="kw">wire</span> sdata_out;
+
+<span class="cmt">    // Instantiate DUT (skip MCLK gen for simulation)</span>
+    <span class="mod">i2s_rx</span> dut_rx (
+        .clk(clk_100mhz), .rst_n(rst_n),
+        .bclk(bclk), .lrclk(lrclk), .sdata(sdata_in),
+        .left_sample(), .right_sample(), .sample_valid()
+    );
+
+    <span class="cmt">// 100 MHz system clock</span>
+    <span class="kw">initial</span> clk_100mhz = <span class="num">0</span>;
+    <span class="kw">always</span> #<span class="num">5</span> clk_100mhz = ~clk_100mhz;   <span class="cmt">// 10 ns period</span>
+
+    <span class="cmt">// 3.072 MHz BCLK (for 48kHz × 64 bits per frame)</span>
+    <span class="kw">initial</span> bclk = <span class="num">0</span>;
+    <span class="kw">always</span> #<span class="num">163</span> bclk = ~bclk;            <span class="cmt">// ~163 ns half-period</span>
+
+    <span class="cmt">// 48 kHz LRCLK (toggles every 32 BCLKs)</span>
+    <span class="kw">integer</span> bclk_count = <span class="num">0</span>;
+    <span class="kw">always</span> @(<span class="kw">posedge</span> bclk) <span class="kw">begin</span>
+        bclk_count &lt;= bclk_count + <span class="num">1</span>;
+        <span class="kw">if</span> (bclk_count == <span class="num">31</span>) <span class="kw">begin</span>
+            lrclk &lt;= ~lrclk;
+            bclk_count &lt;= <span class="num">0</span>;
+        <span class="kw">end</span>
+    <span class="kw">end</span>
+
+    <span class="cmt">// Sine wave lookup: 1 kHz at 48 kHz sample rate = 48 samples/cycle</span>
+    <span class="kw">integer</span> sample_idx = <span class="num">0</span>;
+    <span class="kw">reg</span> [<span class="num">23</span>:<span class="num">0</span>] sine_sample;
+    <span class="kw">integer</span> bit_idx;
+
+    <span class="kw">always</span> @(<span class="kw">negedge</span> lrclk) <span class="kw">begin</span>   <span class="cmt">// New sample every LRCLK</span>
+        sine_sample = $<span class="sig">rtoi</span>(<span class="num">8388607.0</span> * $<span class="sig">sin</span>(<span class="num">2.0</span> * <span class="num">3.14159</span> * sample_idx / <span class="num">48.0</span>));
+        sample_idx  = (sample_idx + <span class="num">1</span>) % <span class="num">48</span>;
+    <span class="kw">end</span>
+
+    <span class="kw">always</span> @(<span class="kw">negedge</span> bclk) <span class="kw">begin</span>    <span class="cmt">// Drive SDATA MSB first on BCLK falling</span>
+        sdata_in = sine_sample[<span class="num">23</span> - bit_idx];
+        bit_idx  = (bit_idx + <span class="num">1</span>) % <span class="num">24</span>;
+    <span class="kw">end</span>
+
+    <span class="kw">initial begin</span>
+        $<span class="sig">dumpfile</span>(<span class="str">"audio_eq.vcd"</span>);
+        $<span class="sig">dumpvars</span>(<span class="num">0</span>, tb_audio_eq);
+        rst_n = <span class="num">0</span>; lrclk = <span class="num">0</span>; sdata_in = <span class="num">0</span>; bit_idx = <span class="num">0</span>;
+        #<span class="num">500</span> rst_n = <span class="num">1</span>;
+        #<span class="num">5_000_000</span>;                    <span class="cmt">// Simulate 5 ms of audio</span>
+        $<span class="sig">display</span>(<span class="str">"Simulation complete."</span>);
+        $<span class="sig">finish</span>;
+    <span class="kw">end</span>
+<span class="kw">endmodule</span></div>
+    <div class="info-box ib-blue" style="margin-top:10px;">
+      <div class="info-label">Run this testbench</div>
+      <p>With Icarus Verilog: <span class="signal-badge">iverilog -o sim tb_audio_eq.v i2s_rx.v fir_filter.v && vvp sim</span><br>Then open the waveform: <span class="signal-badge">gtkwave audio_eq.vcd</span><br>In GTKWave, add the signals <span class="signal-badge">sample_valid</span>, <span class="signal-badge">left_sample</span>, <span class="signal-badge">data_out</span> to verify the filter is working.</p>
+    </div>
+  </div>
+
+  <!-- COEFFICIENTS -->
+  <div class="proj-module" id="pm-coeff">
+    <div class="card card-accent-amber">
+      <div class="card-tag tag-amber">Filter Coefficients — Python script</div>
+      <div class="card-title">Generate FIR coefficients in Python, convert to Q1.15 hex for Verilog</div>
+      <div class="card-body">Use SciPy to design the filters, then convert the floating-point coefficients to Q1.15 fixed-point integers. Copy the output directly into the <code>COEFF</code> array in your <code>fir_filter.v</code> files. Run this once per band.</div>
+    </div>
+    <div class="proj-code" id="code-coeff"><button class="proj-ccopy" onclick="projCopy(this,'code-coeff')">Copy</button><span class="cmt"># Run this in Python to generate all 3 bands' Verilog coefficients
+# pip install scipy numpy</span>
+
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+<span class="kw">from</span> scipy.signal <span class="kw">import</span> firwin, freqz
+
+FS       = <span class="num">48000</span>     <span class="cmt"># Sample rate (Hz)</span>
+N_TAPS   = <span class="num">32</span>       <span class="cmt"># Must match N_TAPS in Verilog module</span>
+Q_SCALE  = <span class="num">2**15</span>   <span class="cmt"># Q1.15: multiply float coefficient by 32768</span>
+
+<span class="kw">def</span> to_q15_hex(coeffs):
+    <span class="str">"""Convert float coefficients to Q1.15 signed hex for Verilog"""</span>
+    q15 = np.round(coeffs * Q_SCALE).astype(<span class="kw">int</span>)
+    q15 = np.clip(q15, -<span class="num">32768</span>, <span class="num">32767</span>)  <span class="cmt"># Clamp to 16-bit signed range</span>
+    <span class="kw">return</span> [<span class="str">f"16'sh{v &amp; 0xFFFF:04X}"</span> <span class="kw">for</span> v <span class="kw">in</span> q15]
+
+<span class="cmt"># ── BASS: low-pass, cutoff 300 Hz ──────────────────────────</span>
+bass_coeffs = firwin(N_TAPS, <span class="num">300</span> / (FS/<span class="num">2</span>), window=<span class="str">'hamming'</span>)
+
+<span class="cmt"># ── MID: band-pass, passband 300 Hz – 3 kHz ────────────────</span>
+mid_coeffs = firwin(N_TAPS, [<span class="num">300</span>/<span class="num">24000</span>, <span class="num">3000</span>/<span class="num">24000</span>],
+                    window=<span class="str">'hamming'</span>, pass_zero=<span class="kw">False</span>)
+
+<span class="cmt"># ── TREBLE: high-pass, cutoff 3 kHz ────────────────────────</span>
+treble_coeffs = firwin(N_TAPS, <span class="num">3000</span> / (FS/<span class="num">2</span>),
+                       window=<span class="str">'hamming'</span>, pass_zero=<span class="kw">False</span>)
+
+<span class="cmt"># ── Print as Verilog localparam arrays ─────────────────────</span>
+<span class="kw">for</span> name, coeffs <span class="kw">in</span> [(<span class="str">'BASS'</span>, bass_coeffs), (<span class="str">'MID'</span>, mid_coeffs), (<span class="str">'TREBLE'</span>, treble_coeffs)]:
+    hexvals = to_q15_hex(coeffs)
+    print(<span class="str">f"\n// {name} band FIR coefficients ({N_TAPS} taps, Q1.15)"</span>)
+    print(<span class="str">f"localparam signed [15:0] COEFF [0:{N_TAPS-1}] = '{{"</span>)
+    rows = [<span class="str">'    '</span> + <span class="str">', '</span>.join(hexvals[i:i+<span class="num">4</span>]) <span class="kw">for</span> i <span class="kw">in</span> range(<span class="num">0</span>, N_TAPS, <span class="num">4</span>)]
+    print(<span class="str">',\n'</span>.join(rows) + <span class="str">'\n};'</span>)
+
+<span class="cmt"># ── Verify: plot frequency responses (optional) ─────────────</span>
+<span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+fig, ax = plt.subplots()
+<span class="kw">for</span> name, coeffs <span class="kw">in</span> [(<span class="str">'Bass'</span>, bass_coeffs), (<span class="str">'Mid'</span>, mid_coeffs), (<span class="str">'Treble'</span>, treble_coeffs)]:
+    w, h = freqz(coeffs, fs=FS, worN=<span class="num">2048</span>)
+    ax.plot(w, <span class="num">20</span>*np.log10(np.abs(h)+<span class="num">1e-10</span>), label=name)
+ax.set(xlabel=<span class="str">'Frequency (Hz)'</span>, ylabel=<span class="str">'Gain (dB)'</span>, xscale=<span class="str">'log'</span>, ylim=[-<span class="num">60</span>,<span class="num">5</span>])
+ax.legend(); ax.grid(<span class="kw">True</span>); plt.show()</div>
+    <div class="tip-box" style="margin-top:10px;"><strong>Workflow:</strong> Run this script → copy the 3 printed <code>localparam COEFF</code> arrays → paste into <code>fir_filter_bass.v</code>, <code>fir_filter_mid.v</code>, <code>fir_filter_treble.v</code>. The plot will show you the 3 frequency responses — verify they add up to a flat response at unity gain before synthesising.</div>
+  </div>
+
+  <!-- XDC constraints hint -->
+  <div class="sec-h2">Vivado Constraints File (XDC)</div>
+  <div class="card card-accent-blue">
+    <div class="card-body" style="margin-bottom:8px;">Map your top-level ports to physical Basys 3 pins. The I2S Pmod connects to the JA connector. Adjust pin names for other boards.</div>
+    <div class="proj-code" id="code-xdc"><button class="proj-ccopy" onclick="projCopy(this,'code-xdc')">Copy</button><span class="cmt"># Basys 3 XDC constraints for audio_eq_top</span>
+
+<span class="cmt"># System clock (100 MHz onboard oscillator)</span>
+set_property PACKAGE_PIN W5  [get_ports clk_100mhz]
+set_property IOSTANDARD LVCMOS33 [get_ports clk_100mhz]
+create_clock -period 10.000 -name sys_clk [get_ports clk_100mhz]
+
+<span class="cmt"># Reset button (centre button)</span>
+set_property PACKAGE_PIN U18 [get_ports btnC]
+set_property IOSTANDARD LVCMOS33 [get_ports btnC]
+
+<span class="cmt"># Slide switches SW[8:0]</span>
+set_property PACKAGE_PIN V17 [get_ports {sw[0]}]
+set_property PACKAGE_PIN V16 [get_ports {sw[1]}]
+set_property PACKAGE_PIN W16 [get_ports {sw[2]}]
+set_property PACKAGE_PIN W17 [get_ports {sw[3]}]
+set_property PACKAGE_PIN W15 [get_ports {sw[4]}]
+set_property PACKAGE_PIN V15 [get_ports {sw[5]}]
+set_property PACKAGE_PIN W14 [get_ports {sw[6]}]
+set_property PACKAGE_PIN W13 [get_ports {sw[7]}]
+set_property PACKAGE_PIN V2  [get_ports {sw[8]}]
+set_property IOSTANDARD LVCMOS33 [get_ports {sw[*]}]
+
+<span class="cmt"># Pmod JA — I2S2 audio module</span>
+<span class="cmt"># JA1=BCLK  JA2=LRCLK  JA3=SDATA_IN  JA4=SDATA_OUT  JA7=MCLK</span>
+set_property PACKAGE_PIN J1  [get_ports i2s_bclk]
+set_property PACKAGE_PIN L2  [get_ports i2s_lrclk]
+set_property PACKAGE_PIN J2  [get_ports i2s_sdata_in]
+set_property PACKAGE_PIN G2  [get_ports i2s_sdata_out]
+set_property PACKAGE_PIN H1  [get_ports i2s_mclk]
+set_property IOSTANDARD LVCMOS33 [get_ports {i2s_*}]</div>
+  </div>
+
+  <!-- Common mistakes -->
+  <div class="sec-h2">Common Mistakes & How to Fix Them</div>
+  <div class="card card-accent-coral">
+    <table class="kv">
+      <tr><td>No audio output</td><td>Check Phase 1 first — does a pure loopback work? If not, your I2S clocking or pin assignments are wrong. Use Vivado ILA (logic analyser) to probe BCLK and LRCLK on the FPGA pins.</td></tr>
+      <tr><td>Distorted / clicky audio</td><td>Almost always an overflow in the fixed-point arithmetic. Check that the accumulator in the FIR is wide enough. Also check the truncation bit positions when converting back to 24-bit output.</td></tr>
+      <tr><td>Timing failure in Vivado</td><td>FIR accumulation across 32 taps in one cycle is too slow for 100 MHz. Pipeline the MAC: register the accumulator after every 4 adds. Or increase the clock period constraint slightly (e.g. 12 ns = 83 MHz).</td></tr>
+      <tr><td>Simulation works, board fails</td><td>Missing 2-flop synchroniser on I2S inputs. Metastability causes intermittent bit errors on real hardware that simulation never sees. Add the synchroniser registers.</td></tr>
+      <tr><td>Wrong frequency response</td><td>Coefficients wrong. Re-run the Python script and plot the frequency response. Verify the cutoff frequencies are what you expect before loading to FPGA.</td></tr>
+    </table>
+  </div>
+
+</div><!-- end sec-project -->
+
+<!-- ═══════════ TRACKER ═══════════ -->
+<div class="section" id="sec-tracker">
+
+  <div class="sec-h2">My Learning Progress</div>
+
+  <div class="card">
+    <div style="font-size:0.9rem;font-weight:600;margin-bottom:12px;">Topic Completion — click to mark done</div>
+
+    <div style="margin-bottom:16px;">
+      <div style="font-size:0.75rem;font-weight:600;color:var(--ink3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;">Phase 1 — Digital Logic Foundations</div>
+      <div class="prog-grid" id="prog-p1">
+        <div class="prog-cell" onclick="toggleProg(this,'Boolean algebra')">Bool</div>
+        <div class="prog-cell" onclick="toggleProg(this,'DeMorgan theorem')">DeMorgan</div>
+        <div class="prog-cell" onclick="toggleProg(this,'Karnaugh maps')">K-maps</div>
+        <div class="prog-cell" onclick="toggleProg(this,'Multiplexers')">Mux</div>
+        <div class="prog-cell" onclick="toggleProg(this,'Half & full adder')">Adder</div>
+        <div class="prog-cell" onclick="toggleProg(this,'Flip-flops')">D-FF</div>
+        <div class="prog-cell" onclick="toggleProg(this,'Registers')">Regs</div>
+        <div class="prog-cell" onclick="toggleProg(this,'Counters')">Counter</div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:16px;">
+      <div style="font-size:0.75rem;font-weight:600;color:var(--ink3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;">Phase 2 — Verilog HDL</div>
+      <div class="prog-grid">
+        <div class="prog-cell" onclick="toggleProg(this,'Verilog syntax')">Syntax</div>
+        <div class="prog-cell" onclick="toggleProg(this,'Modules and ports')">Modules</div>
+        <div class="prog-cell" onclick="toggleProg(this,'Wire vs reg')">Wire/Reg</div>
+        <div class="prog-cell" onclick="toggleProg(this,'Always blocks')">Always</div>
+        <div class="prog-cell" onclick="toggleProg(this,'FSM in Verilog')">FSM</div>
+        <div class="prog-cell" onclick="toggleProg(this,'Testbenches')">Tbench</div>
+        <div class="prog-cell" onclick="toggleProg(this,'HDLBits 50% done')">HDL50%</div>
+        <div class="prog-cell" onclick="toggleProg(this,'HDLBits 100% done')">HDL100</div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:16px;">
+      <div style="font-size:0.75rem;font-weight:600;color:var(--ink3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;">Phase 3 — FPGA & Tools</div>
+      <div class="prog-grid">
+        <div class="prog-cell" onclick="toggleProg(this,'Vivado installed')">Vivado</div>
+        <div class="prog-cell" onclick="toggleProg(this,'LED blinker working')">Blinker</div>
+        <div class="prog-cell" onclick="toggleProg(this,'7-seg display')">7-seg</div>
+        <div class="prog-cell" onclick="toggleProg(this,'XDC constraints file')">XDC</div>
+        <div class="prog-cell" onclick="toggleProg(this,'Timing analysis')">Timing</div>
+        <div class="prog-cell" onclick="toggleProg(this,'UART implemented')">UART</div>
+        <div class="prog-cell" onclick="toggleProg(this,'First synthesis pass')">Synth</div>
+        <div class="prog-cell" onclick="toggleProg(this,'Bitstream on board')">Board</div>
+      </div>
+    </div>
+
+    <div>
+      <div style="font-size:0.75rem;font-weight:600;color:var(--ink3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;">Phase 4 — Advanced Design</div>
+      <div class="prog-grid">
+        <div class="prog-cell" onclick="toggleProg(this,'ALU design')">ALU</div>
+        <div class="prog-cell" onclick="toggleProg(this,'Pipeline design')">Pipeline</div>
+        <div class="prog-cell" onclick="toggleProg(this,'FIFO implementation')">FIFO</div>
+        <div class="prog-cell" onclick="toggleProg(this,'SPI controller')">SPI</div>
+        <div class="prog-cell" onclick="toggleProg(this,'VGA controller')">VGA</div>
+        <div class="prog-cell" onclick="toggleProg(this,'CPU datapath')">CPU</div>
+        <div class="prog-cell" onclick="toggleProg(this,'SystemVerilog assertions')">SVA</div>
+        <div class="prog-cell" onclick="toggleProg(this,'Final project done')">Done! 🎓</div>
+      </div>
+    </div>
+
+    <div class="prog-bar-wrap" style="margin-top:16px;">
+      <div class="prog-bar-fill" id="prog-fill" style="width:0%"></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--ink3);margin-top:4px;">
+      <span id="prog-label">0 / 32 topics completed</span>
+      <span id="prog-pct">0%</span>
+    </div>
+  </div>
+
+  <div class="card card-accent-blue" style="margin-top:12px;">
+    <div class="card-tag tag-blue">Weekly checklist — copy into your notes</div>
+    <div style="font-family:var(--mono);font-size:0.8rem;line-height:2.1;color:var(--ink2);margin-top:8px;white-space:pre-line;">☐  Did HDLBits exercises
+☐  Simulated a Verilog module
+☐  Read 1 book chapter / watched 1 lecture
+☐  Pushed code to GitHub
+☐  Checked timing report in Vivado
+☐  Asked AI to explain one concept I didn't understand</div>
+  </div>
+
+</div>
+
+<!-- AI RESPONSE MODAL (shared) -->
+<div id="ai-resp-card" style="display:none;position:fixed;bottom:20px;right:20px;width:min(500px,95vw);max-height:60vh;overflow-y:auto;background:var(--card);border:1px solid var(--border);border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,0.15);z-index:1000;padding:1.2rem;">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+    <div style="font-size:0.75rem;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:0.06em;">Claude's Response</div>
+    <button onclick="document.getElementById('ai-resp-card').style.display='none'" style="background:none;border:none;color:var(--ink3);cursor:pointer;font-size:1.1rem;">✕</button>
+  </div>
+  <div id="ai-resp-body" style="font-size:0.84rem;line-height:1.7;color:var(--ink2);white-space:pre-wrap;"></div>
+  <div id="ai-resp-loading" style="color:var(--ink3);font-size:0.82rem;display:none;">Thinking…</div>
+</div>
+
+</main>
+
+<script>
+const DAILY_TIP_KEY   = 'vlsi_daily_tip';
+const DAILY_DATE_KEY  = 'vlsi_daily_date';
+const PROG_KEY        = 'vlsi_progress';
+
+// ── navigation ──
+function show(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sec-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── Claude API call ──
+async function callClaude(prompt, maxTokens=600) {
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: maxTokens,
+      system: 'You are a helpful VLSI and digital design tutor for undergraduate BSc Level 4 students. Give clear, concise, accurate answers. When showing code, use proper Verilog/HDL syntax. Keep responses under 400 words unless asked for more.',
+      messages: [{ role: 'user', content: prompt }]
+    })
+  });
+  const data = await res.json();
+  return data.content?.[0]?.text || 'Unable to get response. Please try again.';
+}
+
+// ── Daily tip with auto-refresh ──
+async function loadDailyTip(force=false) {
+  const today = new Date().toDateString();
+  const stored = localStorage.getItem(DAILY_DATE_KEY);
+
+  if (!force && stored === today && localStorage.getItem(DAILY_TIP_KEY)) {
+    const cached = JSON.parse(localStorage.getItem(DAILY_TIP_KEY));
+    renderDailyTip(cached);
+    document.getElementById('ai-refresh-note').textContent = 'Loaded from cache · refreshes daily · last updated: ' + stored;
+    return;
+  }
+
+  document.getElementById('ai-daily-title').textContent = 'Loading…';
+  document.getElementById('ai-daily-body').textContent = 'Asking Claude for today\'s insight…';
+
+  const tips = [
+    'Give me a surprising and useful VLSI or digital design insight that a BSc Level 4 student might not know. Include a practical tip or a short Verilog example. Make it interesting and educational. Format: first give a catchy title (one line), then explain in 3-5 sentences.',
+    'Give me a common mistake that Verilog beginners make, explain why it happens, and how to fix it. Include a bad code example and the corrected version. Format: title first, then explanation.',
+    'Give a practical FPGA optimization tip for BSc students — something that improves timing or resource usage. Be specific. Format: title first, then the tip.',
+    'Explain one important concept from VLSI design (timing, power, area) with a concrete example that a BSc student can understand. Format: title first, then explanation.',
+  ];
+  const prompt = tips[Math.floor(Math.random() * tips.length)];
+
+  try {
+    const text = await callClaude(prompt, 400);
+    const lines = text.split('\n').filter(l => l.trim());
+    const tip = { title: lines[0] || 'Today\'s VLSI Insight', body: lines.slice(1).join('\n').trim() || text };
+    localStorage.setItem(DAILY_TIP_KEY, JSON.stringify(tip));
+    localStorage.setItem(DAILY_DATE_KEY, today);
+    renderDailyTip(tip);
+    document.getElementById('ai-refresh-note').textContent = 'Updated: ' + today + ' · auto-refreshes every 24 hours';
+    updateTicker('AI daily tip refreshed: ' + tip.title.slice(0, 60) + '…');
+  } catch(e) {
+    document.getElementById('ai-daily-title').textContent = 'Could not load today\'s tip';
+    document.getElementById('ai-daily-body').textContent = 'Check your internet connection and try refreshing.';
+  }
+}
+
+function renderDailyTip(tip) {
+  document.getElementById('ai-daily-title').textContent = tip.title.replace(/^#+\s*/,'').replace(/^\*+/,'').trim();
+  document.getElementById('ai-daily-body').textContent = tip.body;
+}
+
+// ── General AI ask ──
+async function askAI(q) {
+  if (!q || !q.trim()) { alert('Please enter a question.'); return; }
+  const card = document.getElementById('ai-resp-card');
+  const body = document.getElementById('ai-resp-body');
+  const loading = document.getElementById('ai-resp-loading');
+  card.style.display = 'block';
+  body.textContent = '';
+  loading.style.display = 'block';
+
+  // Also check for the inline response box
+  const inlineResp = document.getElementById('ai-response');
+  if (inlineResp) { inlineResp.style.display = 'none'; }
+
+  try {
+    const text = await callClaude(q, 800);
+    loading.style.display = 'none';
+    body.textContent = text;
+    updateTicker('New AI response generated');
+  } catch(e) {
+    loading.style.display = 'none';
+    body.textContent = 'Error reaching Claude API. Check your connection.';
+  }
+}
+
+// ── Verilog AI response (for verilog tab buttons) ──
+async function askVerilog(q) {
+  const box = document.getElementById('verilog-ai-resp');
+  const body = document.getElementById('verilog-ai-body');
+  if (box) { box.style.display = 'block'; body.textContent = 'Asking Claude…'; }
+  try {
+    const text = await callClaude(q, 1000);
+    if (body) body.textContent = text;
+  } catch(e) {
+    if (body) body.textContent = 'Error: ' + e.message;
+  }
+}
+
+// ── Quiz generator ──
+async function generateQuiz(topic) {
+  const container = document.getElementById('quiz-container');
+  container.innerHTML = '<div class="card" style="text-align:center;padding:1.5rem;color:var(--ink3);">Generating ' + topic + ' questions…</div>';
+  const prompt = `Generate 3 multiple-choice questions about "${topic}" for a BSc Level 4 VLSI/digital design student. 
+Format each question EXACTLY like this (use ||| as separators):
+QUESTION: [question text]
+A: [option A text]
+B: [option B text]  
+C: [option C text]
+D: [option D text]
+ANSWER: [A, B, C, or D]
+EXPLAIN: [brief explanation of correct answer]
+---
+Generate all 3 questions.`;
+
+  try {
+    const text = await callClaude(prompt, 1200);
+    const blocks = text.split('---').filter(b => b.trim());
+    container.innerHTML = '';
+    blocks.slice(0,3).forEach((block, qi) => {
+      const q     = (block.match(/QUESTION:\s*(.+)/i)||[])[1]?.trim() || '';
+      const opts  = ['A','B','C','D'].map(l => (block.match(new RegExp(l+':\\s*(.+)','i'))||[])[1]?.trim()).filter(Boolean);
+      const ans   = (block.match(/ANSWER:\s*([A-D])/i)||[])[1]?.trim() || 'A';
+      const exp   = (block.match(/EXPLAIN:\s*(.+)/si)||[])[1]?.trim() || '';
+      const ansIdx= ['A','B','C','D'].indexOf(ans);
+
+      const div = document.createElement('div');
+      div.className = 'card card-accent-blue';
+      div.style.marginBottom = '12px';
+      div.innerHTML = `<div class="quiz-q">Q${qi+1}. ${q}</div><div class="quiz-options">${opts.map((o,i)=>`<button class="quiz-opt" onclick="answerQ(this,'${i===ansIdx?'correct':'wrong'}','${exp.replace(/'/g,"&#39;")}')">${o}</button>`).join('')}</div><div class="quiz-explain">${exp}</div>`;
+      container.appendChild(div);
+    });
+  } catch(e) {
+    container.innerHTML = '<div class="card"><div class="card-body" style="color:var(--coral);">Error generating quiz. Check connection.</div></div>';
+  }
+}
+
+// ── Quiz interaction ──
+function answerQ(btn, type, explain) {
+  const opts = btn.closest('.quiz-options').querySelectorAll('.quiz-opt');
+  opts.forEach(o => o.disabled = true);
+  btn.classList.add(type);
+  const exp = btn.closest('.card').querySelector('.quiz-explain');
+  if (exp) exp.style.display = 'block';
+}
+
+// ── Progress tracker ──
+let prog = JSON.parse(localStorage.getItem(PROG_KEY) || '[]');
+
+function toggleProg(el, topic) {
+  const idx = prog.indexOf(topic);
+  if (idx === -1) { prog.push(topic); el.classList.add('done'); }
+  else { prog.splice(idx, 1); el.classList.remove('done'); }
+  localStorage.setItem(PROG_KEY, JSON.stringify(prog));
+  updateProgBar();
+}
+
+function updateProgBar() {
+  const total = document.querySelectorAll('.prog-cell').length;
+  const done  = prog.length;
+  const pct   = Math.round((done / total) * 100);
+  const fill  = document.getElementById('prog-fill');
+  const label = document.getElementById('prog-label');
+  const pctEl = document.getElementById('prog-pct');
+  if (fill)  fill.style.width  = pct + '%';
+  if (label) label.textContent = done + ' / ' + total + ' topics completed';
+  if (pctEl) pctEl.textContent = pct + '%';
+}
+
+function initProg() {
+  document.querySelectorAll('.prog-cell').forEach(el => {
+    const topic = el.getAttribute('onclick')?.match(/'([^']+)'/)?.[1];
+    if (topic && prog.includes(topic)) el.classList.add('done');
+  });
+  updateProgBar();
+}
+
+// ── Copy code ──
+function copyCode(btn) {
+  const block = btn.parentElement;
+  const text = block.innerText.replace('Copy','').trim();
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 2000);
+  });
+}
+
+// ── Ticker ──
+function updateTicker(msg) {
+  const el = document.getElementById('ticker-text');
+  if (el) el.textContent = msg + ' · ' + new Date().toLocaleTimeString();
+}
+
+// ── Init ──
+// ── Playlist filter ──
+function plFilter(stage, btn) {
+  document.querySelectorAll('.flt-btn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  const cards = document.querySelectorAll('#pl-list .pl-card');
+  const stages = document.querySelectorAll('#pl-list .pl-stage');
+
+  if (stage === 'saved') {
+    const saved = JSON.parse(localStorage.getItem('vlsi_playlists') || '[]');
+    cards.forEach(c => {
+      c.style.display = saved.includes(c.dataset.id) ? '' : 'none';
+    });
+    stages.forEach(s => s.style.display = 'none');
+    return;
+  }
+
+  stages.forEach(s => s.style.display = '');
+  cards.forEach(c => {
+    if (stage === 'all') { c.style.display = ''; }
+    else { c.style.display = c.dataset.stage === stage ? '' : 'none'; }
+  });
+
+  // hide stage headers with no visible cards
+  stages.forEach(s => {
+    if (stage === 'all') { s.style.display = ''; return; }
+    s.style.display = s.dataset.stage === stage ? '' : 'none';
+  });
+}
+
+// ── Save playlist ──
+let savedPlaylists = JSON.parse(localStorage.getItem('vlsi_playlists') || '[]');
+
+function savePlaylist(btn, id, name) {
+  const idx = savedPlaylists.indexOf(id);
+  if (idx === -1) {
+    savedPlaylists.push(id);
+    btn.textContent = '✓ Saved';
+    btn.classList.add('saved');
+  } else {
+    savedPlaylists.splice(idx, 1);
+    btn.textContent = '+ Save';
+    btn.classList.remove('saved');
+  }
+  localStorage.setItem('vlsi_playlists', JSON.stringify(savedPlaylists));
+  renderSavedPlaylists();
+}
+
+function renderSavedPlaylists() {
+  const container = document.getElementById('pl-saved-list');
+  if (!container) return;
+  if (!savedPlaylists.length) {
+    container.innerHTML = '<div class="card" style="text-align:center;padding:1.5rem;color:var(--ink3);"><div style="font-size:0.85rem;">No playlists saved yet. Click <strong>+ Save</strong> on any playlist above.</div></div>';
+    return;
+  }
+  const allCards = document.querySelectorAll('#pl-list .pl-card');
+  let html = '';
+  allCards.forEach(c => {
+    if (savedPlaylists.includes(c.dataset.id)) {
+      const title = c.querySelector('.pl-title')?.textContent || '';
+      const channel = c.querySelector('.pl-channel')?.textContent || '';
+      const link = c.querySelector('.pl-link')?.href || '#';
+      html += `<div class="pl-card" style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:0.8rem 1rem;">
+        <div>
+          <div style="font-size:0.72rem;color:var(--ink3);margin-bottom:2px;">${channel}</div>
+          <div style="font-size:0.88rem;font-weight:600;color:var(--ink);">${title}</div>
+        </div>
+        <div style="display:flex;gap:6px;">
+          <a class="pl-link" href="${link}" target="_blank" style="font-size:0.75rem;padding:5px 12px;">▶ Watch</a>
+          <button onclick="savePlaylist(this,'${c.dataset.id}','${title}')" class="watch-later-btn saved" style="font-size:0.72rem;padding:5px 10px;">✕ Remove</button>
+        </div>
+      </div>`;
+    }
+  });
+  container.innerHTML = html || '<div class="card" style="padding:1rem;color:var(--ink3);font-size:0.85rem;">No saved playlists found.</div>';
+}
+
+function initSavedButtons() {
+  document.querySelectorAll('#pl-list .watch-later-btn').forEach(btn => {
+    const card = btn.closest('.pl-card');
+    if (card && savedPlaylists.includes(card.dataset.id)) {
+      btn.textContent = '✓ Saved';
+      btn.classList.add('saved');
+    }
+  });
+  renderSavedPlaylists();
+}
+
+// ── Project module tabs ──
+function showModule(id, btn) {
+  document.querySelectorAll('.proj-module').forEach(m => m.classList.remove('active'));
+  document.querySelectorAll('.proj-module-btn').forEach(b => b.classList.remove('on'));
+  const el = document.getElementById('pm-' + id);
+  if (el) el.classList.add('active');
+  if (btn) btn.classList.add('on');
+}
+
+function projCopy(btn, codeId) {
+  const el = document.getElementById(codeId);
+  const text = el.innerText.replace(/^Copy\n/, '').trim();
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 2000);
+  });
+}
+
+window.addEventListener('load', () => {
+  initProg();
+  initSavedButtons();
+  loadDailyTip();
+  updateTicker('VLSI Learning Hub loaded · ' + new Date().toLocaleDateString());
+
+  // Auto-refresh daily tip every 24hrs
+  setInterval(() => {
+    const today = new Date().toDateString();
+    if (localStorage.getItem(DAILY_DATE_KEY) !== today) loadDailyTip();
+  }, 60 * 60 * 1000); // check every hour
+});
+</script>
+</body>
+</html>
