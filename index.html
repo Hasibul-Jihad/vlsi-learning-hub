@@ -3112,19 +3112,56 @@ function show(id, btn) {
 }
 
 // ── Claude API call ──
+// IMPORTANT: Replace the PROXY_URL below with your Cloudflare Worker URL
+// e.g. 'https://vlsi-ai-proxy.your-subdomain.workers.dev'
+// Leave as empty string to show a helpful setup message instead of a broken error
+const PROXY_URL = '';
+
 async function callClaude(prompt, maxTokens=600) {
-  const res = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: maxTokens,
-      system: 'You are a helpful VLSI and digital design tutor for undergraduate BSc Level 4 students. Give clear, concise, accurate answers. When showing code, use proper Verilog/HDL syntax. Keep responses under 400 words unless asked for more.',
-      messages: [{ role: 'user', content: prompt }]
-    })
-  });
-  const data = await res.json();
-  return data.content?.[0]?.text || 'Unable to get response. Please try again.';
+  if (!PROXY_URL) {
+    return [
+      '⚙️  AI features need a one-time setup to work on GitHub Pages.',
+      '',
+      'The AI worked inside Claude.ai because it injected the API key automatically.',
+      'On a public site, you need a free proxy to keep your key secure.',
+      '',
+      '👉 Steps:',
+      '1. Get a free Anthropic API key at console.anthropic.com',
+      '2. Create a free Cloudflare Worker at cloudflare.com (takes ~10 min)',
+      '3. Paste your Worker URL into the PROXY_URL variable at the top of the script in index.html',
+      '',
+      'Everything else on this site (books, Verilog code, playlists, glossary, progress tracker) works perfectly right now without any setup.',
+    ].join('\n');
+  }
+
+  try {
+    const res = await fetch(PROXY_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: maxTokens,
+        system: 'You are a helpful VLSI and digital design tutor for undergraduate BSc Level 4 students. Give clear, concise, accurate answers. When showing code, use proper Verilog/HDL syntax. Keep responses under 400 words unless asked for more.',
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+
+    if (!res.ok) {
+      const err = await res.text();
+      if (res.status === 401) return '❌ API key error — check your Cloudflare Worker secret is set correctly.';
+      if (res.status === 429) return '⏳ Rate limit hit — wait a moment and try again.';
+      return `❌ Proxy error ${res.status}: ${err}`;
+    }
+
+    const data = await res.json();
+    return data.content?.[0]?.text || 'No response from Claude. Try again.';
+
+  } catch (e) {
+    if (e instanceof TypeError && e.message.includes('fetch')) {
+      return '❌ Cannot reach the AI proxy. Check:\n1. Your Cloudflare Worker is deployed and running\n2. The PROXY_URL in index.html matches your Worker URL exactly\n3. Your internet connection is active';
+    }
+    return `❌ Unexpected error: ${e.message}`;
+  }
 }
 
 // ── Daily tip with auto-refresh ──
